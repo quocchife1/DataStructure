@@ -51,7 +51,7 @@ void write(int x, int y, string z)
 	setposition(x, y);
 	cout << z;
 }
-class Sach{
+class  S ach{
 	public:
 		string masach;
 		string tensach;
