@@ -56,7 +56,7 @@ void write( T x, T y, N z)
 	setposition(x, y);
 	cout << z;
 }
-class  Sach{
+class  CBook {
 	public:
 		string masach;
 		string tensach;
@@ -68,7 +68,7 @@ class  Sach{
 		string ngaynhap;
 		long tinhtrangsach;
 	public:
-		void operator = (Sach s)
+		void operator = (CBook  s)
 		{
 			masach=s.masach;
 			tensach=s.tensach;
@@ -80,8 +80,8 @@ class  Sach{
 			ngaynhap=s.ngaynhap;
 			tinhtrangsach=s.tinhtrangsach;
 		}
-		~Sach(){}
-		friend istream& operator >> (istream& is,Sach& s)
+		~CBook (){}
+		friend istream& operator >> (istream& is,CBook & s)
 		{
 			getline(is,s.masach);
 			getline(is,s.tensach);
@@ -96,12 +96,12 @@ class  Sach{
 			is.ignore();
 			return is;
 		}
-		friend ostream& operator << (ostream& os,Sach s)
+		friend ostream& operator << (ostream& os,CBook  s)
 		{
 			os << s.masach << '\n' << s.tensach << '\n' << s.tacgia << '\n' << s.nhaxuatban << '\n' << s.giaban << '\n' << s.nam << '\n' << s.sotrang << '\n' << s.ngaynhap << '\n' << s.tinhtrangsach << '\n';
 			return os;
 		}
-		bool operator ==(Sach s)
+		bool operator ==(CBook  s)
 		{
 			return (masach==s.masach);
 		}
@@ -199,12 +199,12 @@ class User{
 		}
 };
 vector<Admin> Ad;
-list<Sach> Sa;
+list<CBook > Sa;
 list<Phieu> Ph;
 list<User> Us;
 void savedatasach()
 {
-	outBook.open("Sach.txt",ios_base::out);
+	outBook.open("Book .txt",ios_base::out);
 	for (auto it=Sa.begin();it!=Sa.end();it++)
 		outBook << *it;
 	outBook.close();
@@ -233,9 +233,9 @@ void DATA()
 {
 	Admin A({"",""});
 	User U;
-	inBook.open("Sach.txt",ios_base::in);
+	inBook.open("CBook .txt",ios_base::in);
 	inAdmin.open("Admin.txt",ios_base::in);
-	Sach S;
+	CBook  S;
 	inTicket.open("PhieuMuon.txt",ios_base::in);
 	inUser.open("User.txt",ios_base::in);
 	while(!inAdmin.eof())
@@ -694,7 +694,7 @@ void run()
 	}
 	exit(0);
 }
-void publishingBook(Sach tmp,int n)
+void publishingBook(CBook  tmp,int n)
 {
 	textcolor(15);
 	setposition(5,n); cout << tmp.masach;
@@ -756,7 +756,7 @@ void informationBook(int& n)
 			write(j,iRun ,"--");
 	}
 	n+=2;
-	for (list<Sach>::iterator it=Sa.begin();it!=Sa.end();it++)
+	for (list<CBook >::iterator it=Sa.begin();it!=Sa.end();it++)
 		publishingBook(*it,n++);
 	n+=3;
 }
@@ -815,14 +815,14 @@ void  display()
 	informationBook(n);
 	 function(n,n-1);
 }
-bool  checkBook(Sach tmp)
+bool  checkBook(CBook  tmp)
 {
-	for (list<Sach>::iterator i=Sa.begin();i!=Sa.end();i++)
+	for (list<CBook >::iterator i=Sa.begin();i!=Sa.end();i++)
 		if (*i==tmp)
 			return true;
 	return false;
 }
-bool  bookEntryError(Sach tmp)
+bool  bookEntryError(CBook  tmp)
 {
 	if (tmp.giaban==-1 || tmp.nam==-1 || tmp.sotrang==-1)
 		return true;
@@ -836,7 +836,7 @@ string setstring(int x,int y,int& iCount )
 void moreBook()
 {
 	system("cls");
-	Sach tmp({"","","","",-1,-1,-1});
+	CBook  tmp({"","","","",-1,-1,-1});
 	textcolor(15);
 	setposition(5,7); cout << "MA SACH:";
 	setposition(5,8); cout << "TEN SACH:";
@@ -891,7 +891,7 @@ void moreBook()
 }
 void checkBookCode(string s)
 {
-	Sach k;
+	CBook  k;
 	textcolor(14);
 	for (auto i=Sa.begin();i!=Sa.end();i++)
 	{
@@ -1069,7 +1069,7 @@ void information ()
 	 function(n,n-1);
 }
 int iNumber =0;
-void checkbook(Sach pp,string a)
+void checkbook(CBook  pp,string a)
 {
 	if (pp.masach==a)
 	{
@@ -1084,7 +1084,7 @@ bool checkReader(User us,string a)
 		return true;
 	return false;
 }
-void trace(Sach& sa,string a)
+void trace(CBook & sa,string a)
 {
 	Phieu tmp;
 	for (list<User>::iterator i=Us.begin();i!=Us.end();i++)
@@ -1195,7 +1195,7 @@ void borrowBook()
 		cout << "LOI NHAP SAI HE THONG!";
 		goto hoi;
 	}
-	for (list<Sach>::iterator i=Sa.begin();i!=Sa.end();i++)
+	for (list<CBook >::iterator i=Sa.begin();i!=Sa.end();i++)
 	{
 		checkbook(*i,book);
 		if (iNumber ==2)
@@ -1231,7 +1231,7 @@ void borrowBook()
 	hoi:
 	 function(n,n-1);
 }
-bool findBook(Sach& tmp,string a)
+bool findBook(CBook & tmp,string a)
 {
 	if (tmp.masach==a)
 	{
