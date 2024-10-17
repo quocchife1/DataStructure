@@ -206,14 +206,14 @@ vector<CAdmin> Ad;
 list<CBook > Sa;
 list<CTicket> Ph;
 list<CUser> Us;
-void savedatasach()
+void savedatabook()
 {
 	outBook.open("Book.txt",ios_base::out);
 	for (auto it=Sa.begin();it!=Sa.end();it++)
 		outBook << *it;
 	outBook.close();
 }
-void savedataphieu()
+void savedataticket()
 {
 	outTicket.open("Ticket.txt",ios_base::out);
 	for (auto it=Ph.begin();it!=Ph.end();it++)
@@ -237,7 +237,7 @@ void DATA()
 {
 	CAdmin A({"",""});
 	CUser U;
-	inBook.open("Book .txt",ios_base::in);
+	inBook.open("Book.txt",ios_base::in);
 	inAdmin.open("Admin.txt",ios_base::in);
 	CBook  S;
 	inTicket.open("Ticket.txt",ios_base::in);
@@ -333,12 +333,12 @@ string input(int x,int y,int& iCount )
 	while (13!=a);
 		return tmp;
 }
-string inputstringtacgia(int x,int y,int& iCount )
+string inputstringauthor(int x,int y,int& iCount )
 {
 	string tmp="";
 	char a;
 	char b;
-	int so=0;
+	int iNumber=0;
 	do
 	{
 		a=_getch();
@@ -348,7 +348,7 @@ string inputstringtacgia(int x,int y,int& iCount )
 			if (((b>=65 && b<=90) || (b>=97 && b<=122) || b==' '))
 				goto hoi;
 			else
-				so--;
+				iNumber--;
 			hoi:
 			tmp.resize(tmp.size()-1);
 			setposition(x-1,y); cout << char(32);
@@ -369,7 +369,7 @@ string inputstringtacgia(int x,int y,int& iCount )
 			{
 				if (a==8)
 					continue;
-				so++;
+				iNumber++;
 				tmp.push_back(a);
 				setposition(x,y); cout << a;
 				x++;
@@ -378,8 +378,8 @@ string inputstringtacgia(int x,int y,int& iCount )
 	}
 	while (13!=a);
 	{
-		iCount +=so;
-		if (so==0)
+		iCount +=number;
+		if (number==0)
 			return tmp;
 		return "";
 	}
@@ -389,7 +389,7 @@ string inputstringtensach(int x,int y,int& iCount )
 	string tmp="";
 	char a;
 	char b;
-	int so=0;
+	int iNumber=0;
 	do
 	{
 		a=_getch();
@@ -401,7 +401,7 @@ string inputstringtensach(int x,int y,int& iCount )
 			if (((b>=65 && b<=90) || (b>=97 && b<=122) || (b>='0' && b<='9') || b==' ' || b=='&' || b=='-'))
 				goto hoi;
 			else
-				so--;
+				iNumber--;
 			hoi:
 			tmp.resize(tmp.size()-1);
 			setposition(x-1,y); cout << char(32);
@@ -422,7 +422,7 @@ string inputstringtensach(int x,int y,int& iCount )
 			{
 				if (a==8)
 					continue;
-				so++;
+				iNumber++;
 				tmp.push_back(a);
 				setposition(x,y); cout << a;
 				x++;
@@ -431,18 +431,18 @@ string inputstringtensach(int x,int y,int& iCount )
 	}
 	while (13!=a);
 	{
-		iCount +=so;
-		if (so==0)
+		iCount +=number;
+		if (number==0)
 			return tmp;
 		return "";
 	}
 }
-string inputstringmasach(int x,int y,int& iCount )
+string inputstringbookcode(int x,int y,int& iCount )
 {
 	string tmp="";
 	char a;
 	char b;
-	int so=0;
+	int iNumber=0;
 	do
 	{
 		a=_getch();
@@ -453,7 +453,7 @@ string inputstringmasach(int x,int y,int& iCount )
 			b=tmp[tmp.size()-1];
 			if ((b>=65 && b<=90) || (b>=97 && b<=122) || (b>='0' && b<='9'))
 				goto hoi;
-			so--;
+			iNumber--;
 			hoi:
 			tmp.resize(tmp.size()-1);
 			setposition(x-1,y); cout << char(32);
@@ -463,7 +463,7 @@ string inputstringmasach(int x,int y,int& iCount )
 		}
 		if (a==' ')
 		{
-			so++;
+			iNumber++;
 			setposition(x,y); cout << a;
 			tmp.push_back(a);
 			x++;
@@ -480,7 +480,7 @@ string inputstringmasach(int x,int y,int& iCount )
 		{
 			if (a==8)
 				continue;
-			so++;
+			iNumber++;
 			setposition(x,y); cout << a;
 			tmp.push_back(a);
 			x++;
@@ -488,26 +488,26 @@ string inputstringmasach(int x,int y,int& iCount )
 	}
 	while (13!=a);
 	{
-		iCount +=so;
-		if (so==0)
+		iCount +=number;
+		if (number==0)
 			return tmp;
 		return "";
 	}
 }
 template <class T>
-T chuyenso(string tmp)
+T Shifting(string tmp)
 {
 	stringstream ss(tmp);
 	T k;
 	ss >> k;
 	return k;
 }
-float inputsothuc(int x,int y,int& iCount )
+float inputrealnumber(int x,int y,int& iCount )
 {
 	string tmp="";
 	char a;
 	char b;
-	int so=0;
+	int iNumber=0;
 	do
 	{
 		a=_getch();
@@ -516,10 +516,10 @@ float inputsothuc(int x,int y,int& iCount )
 		if (a==8 && !tmp.empty())
 		{
 			b=tmp[tmp.size()-1];
-			if ((b>=48 && b<=57) || b == '.')
+			if ((b>=48 && b<=57) || b == '.'))
 				goto hoi;
 			else
-				so--;
+				iNumber--;
 			hoi:
 			tmp.resize(tmp.size()-1);
 			setposition(x-1,y); cout << char(32);
@@ -541,132 +541,15 @@ float inputsothuc(int x,int y,int& iCount )
 			setposition(x,y); cout << a;
 			tmp.push_back(a);
 			x++;
-			so++;
-		}
-	}
-	while (13!=a);
-	{
-		iCount +=so;
-		if (so==0 && tmp.size()<=10)
-			return chuyenso<float>(tmp);
-		else
-			return -1;
-	}
-}
-long inputsonguyen(int x,int y,int& iCount )
-{
-	string tmp="";
-	char a,b;
-	int so=0;
-	do
-	{
-		a=_getch();
-		if (tmp.size()>100 && a!=8)
-			continue;
-		if (a==8 && !tmp.empty())
-		{
-			b=tmp[tmp.size()-1];
-			if ((b>=48 && b<=57))
-				goto hoi;
-			else
-				so--;
-			hoi:
-			tmp.resize(tmp.size()-1);
-			setposition(x-1,y); cout << char(32);
-			x--;
-			setposition(x,y);
-			continue;
-		}
-		if ((a>=48 && a<=57))
-		{
-			setposition(x,y); cout << a;
-			tmp.push_back(a);
-			x++;
-			continue;
-		}
-		if (a!=13)
-		{
-			if (a==8)
-				continue;
-			setposition(x,y); cout << a;
-			tmp.push_back(a);
-			x++;
-			so++;
+			iNumber++;
 		}
 		
 	}
 	while (13!=a);
 	{
-		iCount +=so;
-		if (so==0 && tmp.size()<=10)
-			return chuyenso<long>(tmp);
-		else
-			return -1;
-	}
-}
-
-void  function(int n,int k)
-{
-	textcolor(14);
-	setposition(102,k); cout << "<-";
-	setposition(103,n); cout << " ";
-	int null=0;
-	while (true)
-	{
-		textcolor(11);
-		//setposition(105,k); cout << "[BACK]";
-		gotocolor(105,k,"[BACK]",11);
-		//setposition(105,n); cout << "[EXIT]";
-		gotocolor(105,n,"[EXIT]",11);
-		textcolor(14);
-		system("pause>nul");
-		if (GetAsyncKeyState(VK_DOWN))
-		{
-			if (k!=n)
-			{
-				setposition(102,k); cout << "  ";
-				k++;
-				setposition(102,k); cout << "X";
-				null++;	
-			}
-			continue;
-		}
-		if (GetAsyncKeyState(VK_UP))
-		{
-			if (k!=n-1)
-			{
-				setposition(102,k); cout << "  ";
-				k--;
-				setposition(102,k); cout << "<-";
-				null--;
-			}
-			continue;
-		}
-		if (GetAsyncKeyState(VK_RETURN))
-		{
-			textcolor(7);
-			if (null==0)
-				return;
-			if (null==1)
-			{
-				system("cls");
-				exit(0);
-			}
-		}
-	}
-}
-bool checkuser(string a,string b)
-{
-	for (int i=0;i<Ad.size();i++)
-		if (a==Ad[i].getuser() && b==Ad[i].getpassword())
-			return true;
-	return false;
-}
-void run()
-{
-	int so=3;
+		iNumber=3;
 	int iRun =0;
-	while (so!=0)
+	while (iNumber!=0)
 	{
 		int iCount =0;
 		string U_ser;
@@ -693,7 +576,7 @@ void run()
 		if (checkuser(U_ser,P_ass))
 			return;
 		iRun ++;
-		so--;
+		iNumber--;
 		system("cls");
 	}
 	exit(0);
@@ -730,7 +613,7 @@ void informationBook(int& n)
 	{
 		if (i==1)
 		{
-			inumber ++;
+			iNumber ++;
 			continue;
 		}
 		write(4,iNumber ,"|");
