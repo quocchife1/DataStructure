@@ -44,7 +44,7 @@ void gotocolor( T x,T  y, N s,T color )
 	textcolor(7);
 }
 template< class T >
-void textmau(T x,T y,T color )
+void textColor (T x,T y,T color )
 {
 	setposition(x,y);
 	textcolor(color );
