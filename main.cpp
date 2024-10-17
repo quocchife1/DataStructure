@@ -510,16 +510,13 @@ float inputrealnumber(int x,int y,int& iCount )
 	int iNumber=0;
 	do
 	{
-		a=_getch();iNumber=0;
-	do
-	{
 		a=_getch();
 		if (tmp.size()>100 && a!=8)
 			continue;
 		if (a==8 && !tmp.empty())
 		{
 			b=tmp[tmp.size()-1];
-			if ((b>=48 && b<=57))
+			if ((b>=48 && b<=57) || b == '.'))
 				goto hoi;
 			else
 				iNumber--;
@@ -530,7 +527,7 @@ float inputrealnumber(int x,int y,int& iCount )
 			setposition(x,y);
 			continue;
 		}
-		if ((a>=48 && a<=57))
+		if ((a>=48 && a<=57) || a == '.')
 		{
 			setposition(x,y); cout << a;
 			tmp.push_back(a);
