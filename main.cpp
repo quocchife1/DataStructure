@@ -13,40 +13,45 @@
 using namespace std;
 HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
 COORD CursorPosition;
-ifstream inadmin;
-ifstream insach;
-ifstream inphieu;
-ifstream inuser;
-ofstream outadmin;
-ofstream outsach;
-ofstream outphieu;
-ofstream outuser;
-void setposition(int x, int y)
+ifstream inAdmin;
+ifstream inBook;
+ifstream inTicket;
+ifstream inUser;
+ofstream outAdmin;
+ofstream outBook;
+ofstream outTicket;
+ofstream outUser ;
+template< class T >
+void setposition( T x, T y)
 {
 	CursorPosition.X=x;
 	CursorPosition.Y=y;
 	SetConsoleCursorPosition(console, CursorPosition);
 }
+
 void textcolor(int x)
 {
-	HANDLE mau;
-	mau = GetStdHandle(STD_OUTPUT_HANDLE);
-	SetConsoleTextAttribute(mau, x);
+	HANDLE color ;
+	color  = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(color , x);
 }
-void gotocolor(int x,int y,string s,int mau)
+template < class T ,class N >
+void gotocolor( T x,T  y, N s,T color )
 {
 	setposition(x,y);
-	textcolor(mau);
+	textcolor(color );
 	cout << s;
 	textcolor(7);
 }
-void textmau(int x,int y,int mau)
+template< class T >
+void textmau(T x,T y,T color )
 {
 	setposition(x,y);
-	textcolor(mau);
+	textcolor(color );
 	textcolor(7);
 }
-void write(int x, int y, string z)
+template < class T ,class N >
+void write( T x, T y, N z)
 {
 	setposition(x, y);
 	cout << z;
@@ -199,17 +204,17 @@ list<Phieu> Ph;
 list<User> Us;
 void savedatasach()
 {
-	outsach.open("Sach.txt",ios_base::out);
+	outBook.open("Sach.txt",ios_base::out);
 	for (auto it=Sa.begin();it!=Sa.end();it++)
-		outsach << *it;
-	outsach.close();
+		outBook << *it;
+	outBook.close();
 }
 void savedataphieu()
 {
-	outphieu.open("PhieuMuon.txt",ios_base::out);
+	outTicket.open("PhieuMuon.txt",ios_base::out);
 	for (auto it=Ph.begin();it!=Ph.end();it++)
-		outphieu << *it;
-	outphieu.close();
+		outTicket << *it;
+	outTicket.close();
 }
 void login()
 {
@@ -228,41 +233,41 @@ void DATA()
 {
 	Admin A({"",""});
 	User U;
-	insach.open("Sach.txt",ios_base::in);
-	inadmin.open("Admin.txt",ios_base::in);
+	inBook.open("Sach.txt",ios_base::in);
+	inAdmin.open("Admin.txt",ios_base::in);
 	Sach S;
-	inphieu.open("PhieuMuon.txt",ios_base::in);
-	inuser.open("User.txt",ios_base::in);
-	while(!inadmin.eof())
+	inTicket.open("PhieuMuon.txt",ios_base::in);
+	inUser.open("User.txt",ios_base::in);
+	while(!inAdmin.eof())
 	{
-		inadmin >> A;
+		inAdmin >> A;
 		Ad.push_back(A);
 	}
-	while(!insach.eof())
+	while(!inBook.eof())
 	{
-		insach >> S;
+		inBook >> S;
 		if (S.masach=="")
 			continue;
 		Sa.push_back(S);
 	}
-	while(!inphieu.eof())
+	while(!inTicket.eof())
 	{
 		Phieu P({0,"","","","",-1});
-		inphieu >> P;
+		inTicket >> P;
 		if (P.mabandoc=="" && P.masach=="" && P.ngaytra=="" && P.tinhtrang==-1)
 			continue;
 		iCount ++;
 		Ph.push_back(P);
 	}
-	while(!inuser.eof())
+	while(!inUser.eof())
 	{
-		inuser >> U;
+		inUser >> U;
 		Us.push_back(U);
 	}
-	inadmin.close();
-	insach.close();
-	inphieu.close();
-	inuser.close();
+	inAdmin.close();
+	inBook.close();
+	inTicket.close();
+	inUser.close();
 }
 string input_password(int x,int y)
 {
