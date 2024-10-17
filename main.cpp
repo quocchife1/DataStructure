@@ -27,7 +27,7 @@ void setposition(int x, int y)
 	CursorPosition.Y=y;
 	SetConsoleCursorPosition(console, CursorPosition);
 }
-void textolor(int x)
+void textcolor(int x)
 {
 	HANDLE mau;
 	mau = GetStdHandle(STD_OUTPUT_HANDLE);
