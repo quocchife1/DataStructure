@@ -56,162 +56,166 @@ void write( T x, T y, N z)
 	setposition(x, y);
 	cout << z;
 }
+template < class T ,class N >
 class  CBook {
 	public:
-		string masach;
-		string tensach;
-		string tacgia;
-		string nhaxuatban;
-		float giaban;
-		long nam;
-		long sotrang;
-		string ngaynhap;
-		long tinhtrangsach;
+		N strBookCode ;
+		N strBookTitle;
+		N strAuthor;
+		N strPublisher;
+		T fPrice;
+		T lYear;
+		T lpage;
+		N strDate;
+		T lBookStatus;
 	public:
 		void operator = (CBook  s)
 		{
-			masach=s.masach;
-			tensach=s.tensach;
-			tacgia=s.tacgia;
-			nhaxuatban=s.nhaxuatban;
-			giaban=s.giaban;
-			nam=s.nam;
-			sotrang=s.sotrang;
-			ngaynhap=s.ngaynhap;
-			tinhtrangsach=s.tinhtrangsach;
+			strBookCode =s.strBookCode ;
+			strBookTitle=s.strBookTitle;
+			strAuthor=s.strAuthor;
+			strPublisher=s.strPublisher;
+			fPrice=s.fPrice;
+			lYear=s.lYear;
+			lpage=s.lpage;
+			strDate=s.strDate;
+			lBookStatus=s.lBookStatus;
 		}
 		~CBook (){}
 		friend istream& operator >> (istream& is,CBook & s)
 		{
-			getline(is,s.masach);
-			getline(is,s.tensach);
-			getline(is,s.tacgia);
-			getline(is,s.nhaxuatban);
-			is >> s.giaban;
-			is >> s.nam;
-			is >> s.sotrang;
+			getline(is,s.strBookCode );
+			getline(is,s.strBookTitle);
+			getline(is,s.strAuthor);
+			getline(is,s.strPublisher);
+			is >> s.fPrice;
+			is >> s.lYear;
+			is >> s.lpage;
 			is.ignore();
-			getline(is,s.ngaynhap);
-			is >> s.tinhtrangsach;
+			getline(is,s.strDate);
+			is >> s.lBookStatus;
 			is.ignore();
 			return is;
 		}
 		friend ostream& operator << (ostream& os,CBook  s)
 		{
-			os << s.masach << '\n' << s.tensach << '\n' << s.tacgia << '\n' << s.nhaxuatban << '\n' << s.giaban << '\n' << s.nam << '\n' << s.sotrang << '\n' << s.ngaynhap << '\n' << s.tinhtrangsach << '\n';
+			os << s.strBookCode  << '\n' << s.strBookTitle << '\n' << s.strAuthor << '\n' << s.strPublisher << '\n' << s.fPrice << '\n' << s.lYear << '\n' << s.lpage << '\n' << s.strDate << '\n' << s.lBookStatus << '\n';
 			return os;
 		}
 		bool operator ==(CBook  s)
 		{
-			return (masach==s.masach);
+			return (strBookCode ==s.strBookCode );
 		}
 };
-class Phieu{
+template <class T , class N >
+class CTicket{
 	public:
-		long sophieu;
-		string mabandoc;
-		string masach;
-		string ngaymuon;
-		string ngaytra;
-		long tinhtrang;
+		T lNumberTicket;
+		N strReaderCode;
+		N strBookCode ;
+		N strLoanDate;
+		N strPaymentDate;
+		T lPaymentDate;
 	public:
-		void operator = (Phieu p)
+		void operator = (CTicket p)
 		{
-			sophieu=p.sophieu;
-			mabandoc=p.mabandoc;
-			masach=p.masach;
-			ngaymuon=p.ngaymuon;
-			tinhtrang=p.tinhtrang;
+			lNumberTicket=p.lNumberTicket;
+			strReaderCode=p.strReaderCode;
+			strBookCode =p.strBookCode ;
+			strLoanDate=p.strLoanDate;
+			lPaymentDate=p.lPaymentDate;
 		}
-		~Phieu(){}
-		friend istream& operator >> (istream& is,Phieu& p)
+		~CTicket(){}
+		friend istream& operator >> (istream& is,CTicket& p)
 		{
-			is >> p.sophieu;
+			is >> p.lNumberTicket;
 			is.ignore();
-			getline(is,p.mabandoc);
-			getline(is,p.masach);
-			getline(is,p.ngaymuon);
-			getline(is,p.ngaytra);
-			is >> p.tinhtrang;
+			getline(is,p.strReaderCode);
+			getline(is,p.strBookCode );
+			getline(is,p.strLoanDate);
+			getline(is,p.strPaymentDate);
+			is >> p.lPaymentDate;
 			is.ignore();
 			return is;
 		}
-		friend ostream& operator << (ostream& os,Phieu p)
+		friend ostream& operator << (ostream& os,CTicket p)
 		{
-			os << p.sophieu << '\n' << p.mabandoc << '\n' << p.masach << '\n' << p.ngaymuon << '\n' << p.ngaytra << '\n' << p.tinhtrang << '\n';
+			os << p.lNumberTicket << '\n' << p.strReaderCode << '\n' << p.strBookCode  << '\n' << p.strLoanDate << '\n' << p.strPaymentDate << '\n' << p.lPaymentDate << '\n';
 			return os;
 		}
 };
-class Admin{
-	string user;
-	string password;
+template <class N >
+class CAdmin{
+	N strUser ;
+	N strPassWord;
 	public:
-		string getuser(){return user;}
-		string getpassword(){return password;}
-		bool operator == (Admin a)
+		N getuser(){return strUser ;}
+		N getstrPassWord(){return strPassWord;}
+		bool operator == (CAdmin a)
 		{
-			if (user==a.user && password==a.password)
+			if (strUser ==a.strUser  && strPassWord==a.strPassWord)
 				return true;
 			return false;
 		}
-		void operator = (Admin a)
+		void operator = (CAdmin a)
 		{
-			user=a.user;
-			password=a.password;
+			strUser =a.strUser ;
+			strPassWord=a.strPassWord;
 		}
-		Admin(string a,string b)
+		CAdmin( N a, N b)
 		{
-			user=a;
-			password=b;
+			strUser =a;
+			strPassWord=b;
 		}
-		~Admin(){}
-		friend istream& operator >> (istream& is,Admin& ad)
+		~CAdmin(){}
+		friend istream& operator >> (istream& is,CAdmin& ad)
 		{
-			setposition(101,20);is >> ad.user;
-			is >> ad.password;
+			setposition(101,20);is >> ad.strUser ;
+			is >> ad.strPassWord;
 			return is;
 		}
-		friend ostream& operator << (ostream& os,Admin ad)
+		friend ostream& operator << (ostream& os,CAdmin ad)
 		{
-			os << ad.user << '\n' << ad.password;
+			os << ad.strUser  << '\n' << ad.strPassWord;
 			return os;
 		}
 };
-class User{
+template <class N >
+class CUser{
 	public:
-		string ma;
-		string hoten;
-		string ngaydangky;
+		N strUserCode;
+		N strName;
+		N strRegistrationDate;
 	public:
-		void operator = (User us)
+		void operator = (CUser us)
 		{
-			ma=us.ma;
-			hoten=us.hoten;
-			ngaydangky=us.ngaydangky;
+			strUserCode=us.strUserCode;
+			strName=us.strName;
+			strRegistrationDate=us.strRegistrationDate;
 		}
-		~User(){}
-		friend istream& operator >> (istream& is,User& us)
+		~CUser(){}
+		friend istream& operator >> (istream& is,CUser& us)
 		{
-			getline(is,us.ma);
-			getline(is,us.hoten);
-			getline(is,us.ngaydangky);
+			getline(is,us.strUserCode);
+			getline(is,us.strName);
+			getline(is,us.strRegistrationDate);
 			return is;
 		}
 };
-vector<Admin> Ad;
+vector<CAdmin> Ad;
 list<CBook > Sa;
-list<Phieu> Ph;
-list<User> Us;
+list<CTicket> Ph;
+list<CUser> Us;
 void savedatasach()
 {
-	outBook.open("Book .txt",ios_base::out);
+	outBook.open("Book.txt",ios_base::out);
 	for (auto it=Sa.begin();it!=Sa.end();it++)
 		outBook << *it;
 	outBook.close();
 }
 void savedataphieu()
 {
-	outTicket.open("PhieuMuon.txt",ios_base::out);
+	outTicket.open("Ticket.txt",ios_base::out);
 	for (auto it=Ph.begin();it!=Ph.end();it++)
 		outTicket << *it;
 	outTicket.close();
@@ -231,12 +235,12 @@ void login()
 int iCount =1;
 void DATA()
 {
-	Admin A({"",""});
-	User U;
-	inBook.open("CBook .txt",ios_base::in);
+	CAdmin A({"",""});
+	CUser U;
+	inBook.open("Book .txt",ios_base::in);
 	inAdmin.open("Admin.txt",ios_base::in);
 	CBook  S;
-	inTicket.open("PhieuMuon.txt",ios_base::in);
+	inTicket.open("Ticket.txt",ios_base::in);
 	inUser.open("User.txt",ios_base::in);
 	while(!inAdmin.eof())
 	{
@@ -246,15 +250,15 @@ void DATA()
 	while(!inBook.eof())
 	{
 		inBook >> S;
-		if (S.masach=="")
+		if (S.strBookCode =="")
 			continue;
 		Sa.push_back(S);
 	}
 	while(!inTicket.eof())
 	{
-		Phieu P({0,"","","","",-1});
+		CTicket P({0,"","","","",-1});
 		inTicket >> P;
-		if (P.mabandoc=="" && P.masach=="" && P.ngaytra=="" && P.tinhtrang==-1)
+		if (P.strReaderCode=="" && P.strBookCode =="" && P.strPaymentDate=="" && P.lPaymentDate==-1)
 			continue;
 		iCount ++;
 		Ph.push_back(P);
@@ -697,15 +701,15 @@ void run()
 void publishingBook(CBook  tmp,int n)
 {
 	textcolor(15);
-	setposition(5,n); cout << tmp.masach;
-	setposition(16,n); cout << tmp.tensach;
-	setposition(42,n); cout << tmp.tacgia;
-	setposition(60,n); cout << tmp.nhaxuatban;
-	setposition(76,n); cout << tmp.giaban;
-	setposition(89,n); cout << tmp.nam;
-	setposition(106,n); cout << tmp.sotrang;
-	setposition(120,n); cout << tmp.ngaynhap;
-	setposition(137,n); cout << tmp.tinhtrangsach;
+	setposition(5,n); cout << tmp.strBookCode ;
+	setposition(16,n); cout << tmp.strBookTitle;
+	setposition(42,n); cout << tmp.strAuthor;
+	setposition(60,n); cout << tmp.strPublisher;
+	setposition(76,n); cout << tmp.fPrice;
+	setposition(89,n); cout << tmp.lYear;
+	setposition(106,n); cout << tmp.lpage;
+	setposition(120,n); cout << tmp.strDate;
+	setposition(137,n); cout << tmp.lBookStatus;
 	textcolor(7);
 } // nhứt lâm
 void informationBook(int& n)
@@ -760,12 +764,12 @@ void informationBook(int& n)
 		publishingBook(*it,n++);
 	n+=3;
 }
-void  publishingUser(int n,User us)
+void  publishingUser(int n,CUser us)
 {
 	textcolor(15);
-	setposition(5,n); cout << us.ma;
-	setposition(52,n); cout << us.hoten;
-	setposition(100,n); cout << us.ngaydangky;
+	setposition(5,n); cout << us.strUserCode;
+	setposition(52,n); cout << us.strName;
+	setposition(100,n); cout << us.strRegistrationDate;
 	textcolor(7);
 }
 void  informationUser (int& n)
@@ -804,7 +808,7 @@ void  informationUser (int& n)
 			write(j,iRun ,"--");
 	}
 	n+=2;
-	for (list<User>::iterator it=Us.begin();it!=Us.end();it++)
+	for (list<CUser>::iterator it=Us.begin();it!=Us.end();it++)
 		 publishingUser(n++,*it);
 	n+=3;
 }
@@ -824,7 +828,7 @@ bool  checkBook(CBook  tmp)
 }
 bool  bookEntryError(CBook  tmp)
 {
-	if (tmp.giaban==-1 || tmp.nam==-1 || tmp.sotrang==-1)
+	if (tmp.fPrice==-1 || tmp.lYear==-1 || tmp.lpage==-1)
 		return true;
 	return false;
 }
@@ -851,22 +855,22 @@ void moreBook()
 	informationBook(n);
 	textcolor(6);
 	int iCount =0;
-	setposition(14,7);tmp.masach=inputstringmasach(14,7,iCount );
-	setposition(15,8);tmp.tensach=inputstringtensach(15,8,iCount );
-	setposition(14,9);tmp.tacgia=inputstringtacgia(14,9,iCount );
-	setposition(19,10);tmp.nhaxuatban=inputstringtacgia(19,10,iCount );
-	setposition(14,11);tmp.giaban=inputsothuc(14,11,iCount );
-	setposition(20,12);tmp.nam=inputsonguyen(20,12,iCount );
-	setposition(15,13);tmp.sotrang=inputsonguyen(15,13,iCount );
-	tmp.tinhtrangsach=0;
+	setposition(14,7);tmp.strBookCode =inputstringmasach(14,7,iCount );
+	setposition(15,8);tmp.strBookTitle=inputstringtensach(15,8,iCount );
+	setposition(14,9);tmp.strAuthor=inputstringtacgia(14,9,iCount );
+	setposition(19,10);tmp.strPublisher=inputstringtacgia(19,10,iCount );
+	setposition(14,11);tmp.fPrice=inputsothuc(14,11,iCount );
+	setposition(20,12);tmp.lYear=inputsonguyen(20,12,iCount );
+	setposition(15,13);tmp.lpage=inputsonguyen(15,13,iCount );
+	tmp.lBookStatus=0;
 	time_t now = time(0);
 	tm *ltm=localtime(&now);
 	int day=ltm->tm_mday;
 	int month=ltm->tm_mon;
 	month++;
-	int nam=ltm->tm_year;
-	nam+=1900;
-	tmp.ngaynhap=to_string(day)+"/"+to_string(month)+"/"+to_string(nam);
+	int lYear=ltm->tm_year;
+	lYear+=1900;
+	tmp.strDate=to_string(day)+"/"+to_string(month)+"/"+to_string(lYear);
 	textcolor(14);
 	if (iCount !=0)
 	{
@@ -896,9 +900,9 @@ void checkBookCode(string s)
 	for (auto i=Sa.begin();i!=Sa.end();i++)
 	{
 		k=*i;
-		if (k.masach==s)
+		if (k.strBookCode ==s)
 		{
-			if (k.tinhtrangsach==0)
+			if (k.lBookStatus==0)
 			{
 				Sa.erase(i);
 				setposition(100,5); cout << "XOA SACH THANH CONG";
@@ -1004,14 +1008,14 @@ void bookManagement()
 	}
 }
 
-void publishingTicket(Phieu ph,int n)
+void publishingTicket(CTicket ph,int n)
 {
-	setposition(5,n); cout << ph.sophieu;
-	setposition(29,n); cout << ph.mabandoc;
-	setposition(52,n); cout << ph.masach;
-	setposition(71,n); cout << ph.ngaymuon;
-	setposition(94,n); cout << ph.ngaytra;
-	setposition(120,n); cout << ph.tinhtrang;
+	setposition(5,n); cout << ph.lNumberTicket;
+	setposition(29,n); cout << ph.strReaderCode;
+	setposition(52,n); cout << ph.strBookCode ;
+	setposition(71,n); cout << ph.strLoanDate;
+	setposition(94,n); cout << ph.strPaymentDate;
+	setposition(120,n); cout << ph.lPaymentDate;
 }
 void informationTicket(int& n)
 {
@@ -1057,7 +1061,7 @@ void informationTicket(int& n)
 	}
 	n+=2;
 	textcolor(15);
-	for (list<Phieu>::iterator i=Ph.begin();i!=Ph.end();i++)
+	for (list<CTicket>::iterator i=Ph.begin();i!=Ph.end();i++)
 		publishingTicket(*i,n++);
 	n+=3;
 }
@@ -1071,42 +1075,42 @@ void information ()
 int iNumber =0;
 void checkbook(CBook  pp,string a)
 {
-	if (pp.masach==a)
+	if (pp.strBookCode ==a)
 	{
-		if (pp.tinhtrangsach==0)
+		if (pp.lBookStatus==0)
 			iNumber =1;
 		iNumber ++;
 	}	
 }
-bool checkReader(User us,string a)
+bool checkReader(CUser us,string a)
 {
-	if (us.ma==a)
+	if (us.strUserCode==a)
 		return true;
 	return false;
 }
 void trace(CBook & sa,string a)
 {
-	Phieu tmp;
-	for (list<User>::iterator i=Us.begin();i!=Us.end();i++)
+	CTicket tmp;
+	for (list<CUser>::iterator i=Us.begin();i!=Us.end();i++)
 	{
 		if (checkReader(*i,a))
 		{
 			iNumber ++;
-			sa.tinhtrangsach=iCount ;
-			tmp.sophieu=iCount ;
-			tmp.mabandoc=a;
-			tmp.masach=sa.masach;
+			sa.lBookStatus=iCount ;
+			tmp.lNumberTicket=iCount ;
+			tmp.strReaderCode=a;
+			tmp.strBookCode =sa.strBookCode ;
 			time_t now = time(0);
 			tm *ltm=localtime(&now);
 			int day=ltm->tm_mday;
 			int month=ltm->tm_mon;
 			month++;
-			int nam=ltm->tm_year;
-			nam+=1900;
-			tmp.ngaymuon=to_string(day)+"/"+to_string(month)+"/"+to_string(nam);
+			int lYear=ltm->tm_year;
+			lYear+=1900;
+			tmp.strLoanDate=to_string(day)+"/"+to_string(month)+"/"+to_string(lYear);
 			if (month==2)
 			{
-				if (nam%4==0 && nam%400==0)
+				if (lYear%4==0 && lYear%400==0)
 				{
 					day+=7;
 					if (day>29)
@@ -1136,7 +1140,7 @@ void trace(CBook & sa,string a)
 						month++;
 						if (month>12)
 						{
-							nam++;
+							lYear++;
 							month-=12;
 						}
 						else
@@ -1153,8 +1157,8 @@ void trace(CBook & sa,string a)
 					}
 				}
 			}
-			tmp.ngaytra=to_string(day)+"/"+to_string(month)+"/"+to_string(nam);
-			tmp.tinhtrang=1;
+			tmp.strPaymentDate=to_string(day)+"/"+to_string(month)+"/"+to_string(lYear);
+			tmp.lPaymentDate=1;
 			iCount ++;
 			Ph.push_back(tmp);
 			savedataphieu();
@@ -1233,24 +1237,24 @@ void borrowBook()
 }
 bool findBook(CBook & tmp,string a)
 {
-	if (tmp.masach==a)
+	if (tmp.strBookCode ==a)
 	{
-		tmp.tinhtrangsach=0;
+		tmp.lBookStatus=0;
 		return true;
 	}
 	return false;
 }
-bool checkTitket(Phieu& tmp,int n)
+bool checkTitket(CTicket& tmp,int n)
 {
 	iNumber =0;
-	if (n==tmp.sophieu)
+	if (n==tmp.lNumberTicket)
 	{
 		iNumber =1;
-		if (tmp.tinhtrang!=0)
+		if (tmp.lPaymentDate!=0)
 		{
-			tmp.tinhtrang=0;
+			tmp.lPaymentDate=0;
 			for (auto i=Sa.begin();i!=Sa.end();i++)
-				if (findBook(*i,tmp.masach))
+				if (findBook(*i,tmp.strBookCode ))
 				{
 					savedataphieu();
 					savedatasach();
@@ -1288,7 +1292,7 @@ void returnBook()
 		cout << "LOI NHAP SAI HE THONG!";
 		goto hoi;
 	}
-	for (list<Phieu>::iterator i=Ph.begin();i!=Ph.end();i++)
+	for (list<CTicket>::iterator i=Ph.begin();i!=Ph.end();i++)
 		if (checkTitket(*i,tmp))
 			break;
 	textcolor(14);
