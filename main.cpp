@@ -223,7 +223,7 @@ void login()
 	setposition(64,18);cout << "* * * * * * * * * * * * * * * * *";
 
 }	
-int ddem=1;
+int iCount =1;
 void DATA()
 {
 	Admin A({"",""});
@@ -251,7 +251,7 @@ void DATA()
 		inphieu >> P;
 		if (P.mabandoc=="" && P.masach=="" && P.ngaytra=="" && P.tinhtrang==-1)
 			continue;
-		ddem++;
+		iCount ++;
 		Ph.push_back(P);
 	}
 	while(!inuser.eof())
@@ -295,7 +295,7 @@ string input_password(int x,int y)
 	while (13!=a);
 		return tmp;
 }
-string input(int x,int y,int& dem)
+string input(int x,int y,int& iCount )
 {
 	string tmp;
 	char a;
@@ -324,7 +324,7 @@ string input(int x,int y,int& dem)
 	while (13!=a);
 		return tmp;
 }
-string inputstringtacgia(int x,int y,int& dem)
+string inputstringtacgia(int x,int y,int& iCount )
 {
 	string tmp="";
 	char a;
@@ -369,13 +369,13 @@ string inputstringtacgia(int x,int y,int& dem)
 	}
 	while (13!=a);
 	{
-		dem+=so;
+		iCount +=so;
 		if (so==0)
 			return tmp;
 		return "";
 	}
 }
-string inputstringtensach(int x,int y,int& dem)
+string inputstringtensach(int x,int y,int& iCount )
 {
 	string tmp="";
 	char a;
@@ -422,13 +422,13 @@ string inputstringtensach(int x,int y,int& dem)
 	}
 	while (13!=a);
 	{
-		dem+=so;
+		iCount +=so;
 		if (so==0)
 			return tmp;
 		return "";
 	}
 }
-string inputstringmasach(int x,int y,int& dem)
+string inputstringmasach(int x,int y,int& iCount )
 {
 	string tmp="";
 	char a;
@@ -479,7 +479,7 @@ string inputstringmasach(int x,int y,int& dem)
 	}
 	while (13!=a);
 	{
-		dem+=so;
+		iCount +=so;
 		if (so==0)
 			return tmp;
 		return "";
@@ -493,7 +493,7 @@ T chuyenso(string tmp)
 	ss >> k;
 	return k;
 }
-float inputsothuc(int x,int y,int& dem)
+float inputsothuc(int x,int y,int& iCount )
 {
 	string tmp="";
 	char a;
@@ -537,14 +537,14 @@ float inputsothuc(int x,int y,int& dem)
 	}
 	while (13!=a);
 	{
-		dem+=so;
+		iCount +=so;
 		if (so==0 && tmp.size()<=10)
 			return chuyenso<float>(tmp);
 		else
 			return -1;
 	}
 }
-long inputsonguyen(int x,int y,int& dem)
+long inputsonguyen(int x,int y,int& iCount )
 {
 	string tmp="";
 	char a,b;
@@ -588,7 +588,7 @@ long inputsonguyen(int x,int y,int& dem)
 	}
 	while (13!=a);
 	{
-		dem+=so;
+		iCount +=so;
 		if (so==0 && tmp.size()<=10)
 			return chuyenso<long>(tmp);
 		else
@@ -596,7 +596,7 @@ long inputsonguyen(int x,int y,int& dem)
 	}
 }
 
-void ham(int n,int k)
+void  function(int n,int k)
 {
 	textcolor(14);
 	setposition(102,k); cout << "<-";
@@ -656,15 +656,15 @@ bool checkuser(string a,string b)
 void run()
 {
 	int so=3;
-	int chay=0;
+	int iRun =0;
 	while (so!=0)
 	{
-		int dem=0;
+		int iCount =0;
 		string U_ser;
 		string P_ass;
 		login();
 		setposition(60,19);
-		if (chay!=0)
+		if (iRun !=0)
 		{
 			textcolor(11);
 			cout << "User hoac Password sai, Ban con ";
@@ -678,18 +678,18 @@ void run()
 		setposition(66,23); cout << "Password:";
 		setposition(72,21); 
 		textcolor(15);
-		U_ser=input(72,21,dem);
+		U_ser=input(72,21,iCount );
 		setposition(76,23);
 		P_ass=input_password(76,23);
 		if (checkuser(U_ser,P_ass))
 			return;
-		chay++;
+		iRun ++;
 		so--;
 		system("cls");
 	}
 	exit(0);
 }
-void xuatsach(Sach tmp,int n)
+void publishingBook(Sach tmp,int n)
 {
 	textcolor(15);
 	setposition(5,n); cout << tmp.masach;
@@ -702,8 +702,8 @@ void xuatsach(Sach tmp,int n)
 	setposition(120,n); cout << tmp.ngaynhap;
 	setposition(137,n); cout << tmp.tinhtrangsach;
 	textcolor(7);
-}
-void inforsach(int& n)
+} // nhứt lâm
+void informationBook(int& n)
 {
 	textcolor(7);
 	gotocolor(5,n,"MA SACH",14);
@@ -716,46 +716,46 @@ void inforsach(int& n)
 	gotocolor(120,n,"NGAY NHAP KHO",14);
 	gotocolor(137,n,"TINH TRANG SACH",14);
 	textcolor(3);
-	int so=n;
+	int iNumber =n;
 	for (int i=0;i<=Sa.size()+1;i++)
 	{
 		if (i==1)
 		{
-			so++;
+			inumber ++;
 			continue;
 		}
-		write(4,so,"|");
-		write(15,so,"|");
-		write(41,so,"|");
-		write(59,so,"|");
-		write(75,so,"|");
-		write(88,so,"|");
-		write(105,so,"|");
-		write(119,so,"|");
-		write(136,so,"|");
-		write(155,so,"|");
-		so++;
+		write(4,iNumber ,"|");
+		write(15,iNumber ,"|");
+		write(41,iNumber ,"|");
+		write(59,iNumber ,"|");
+		write(75,iNumber ,"|");
+		write(88,iNumber ,"|");
+		write(105,iNumber ,"|");
+		write(119,iNumber ,"|");
+		write(136,iNumber ,"|");
+		write(155,iNumber ,"|");
+		iNumber ++;
 	}
-	int chay=n-2;
+	int iRun =n-2;
 	for (int i=1;i<=3;i++)
 	{
 		if (i==3)
 		{
 			if (!Sa.empty())
 				for (int j=4;j<=154;j+=2)
-					write(j,chay+Sa.size()+1,"--");
+					write(j,iRun +Sa.size()+1,"--");
 			break;
 		}	
-		chay+=i;
+		iRun +=i;
 		for (int j=4;j<=154;j+=2)
-			write(j,chay,"--");
+			write(j,iRun ,"--");
 	}
 	n+=2;
 	for (list<Sach>::iterator it=Sa.begin();it!=Sa.end();it++)
-		xuatsach(*it,n++);
+		publishingBook(*it,n++);
 	n+=3;
 }
-void xuatuser(int n,User us)
+void  publishingUser(int n,User us)
 {
 	textcolor(15);
 	setposition(5,n); cout << us.ma;
@@ -763,72 +763,72 @@ void xuatuser(int n,User us)
 	setposition(100,n); cout << us.ngaydangky;
 	textcolor(7);
 }
-void inforuser(int& n)
+void  informationUser (int& n)
 {
 	textcolor(15);
 	gotocolor(5,n,"MA USER",14);
 	gotocolor(52,n,"HO TEN",14);
 	gotocolor(100,n,"NGAY DANG KY",14);
 	textcolor(3);
-	int so=n;
+	int  iNumber =n;
 	for (int i=0;i<=Us.size()+1;i++)
 	{
 		if (i==1)
 		{
-			so++;
+			 iNumber ++;
 			continue;
 		}
-		write(4,so,"|");
-		write(51,so,"|");
-		write(99,so,"|");
-		write(155,so,"|");
-		so++;
+		write(4, iNumber ,"|");
+		write(51, iNumber ,"|");
+		write(99, iNumber ,"|");
+		write(155, iNumber ,"|");
+		 iNumber ++;
 	}
-	int chay=n-2;
+	int iRun =n-2;
 	for (int i=1;i<=3;i++)
 	{
 		if (i==3)
 		{
 			if (!Us.empty())
 				for (int j=4;j<=154;j+=2)
-					write(j,chay+Us.size()+1,"--");
+					write(j,iRun +Us.size()+1,"--");
 			break;
 		}	
-		chay+=i;
+		iRun +=i;
 		for (int j=4;j<=154;j+=2)
-			write(j,chay,"--");
+			write(j,iRun ,"--");
 	}
 	n+=2;
 	for (list<User>::iterator it=Us.begin();it!=Us.end();it++)
-		xuatuser(n++,*it);
+		 publishingUser(n++,*it);
 	n+=3;
 }
-void hienthi()
+void  display()
 {
 	int n=10;
 	system("cls");
-	inforsach(n);
-	ham(n,n-1);
+	informationBook(n);
+	 function(n,n-1);
 }
-bool checksach(Sach tmp)
+bool  checkBook(Sach tmp)
 {
 	for (list<Sach>::iterator i=Sa.begin();i!=Sa.end();i++)
 		if (*i==tmp)
 			return true;
 	return false;
 }
-bool loinhapsach(Sach tmp)
+bool  bookEntryError(Sach tmp)
 {
 	if (tmp.giaban==-1 || tmp.nam==-1 || tmp.sotrang==-1)
 		return true;
 	return false;
 }
-string setstring(int x,int y,int& dem)
+string setstring(int x,int y,int& iCount )
 {
-	string chay=input(x,y,dem);
-	return chay;
+	string strRun=input(x,y,iCount );
+	return strRun;
 }
-void themsach()
+void moreBook()
 {
 	system("cls");
 	Sach tmp({"","","","",-1,-1,-1});
@@ -843,16 +843,16 @@ void themsach()
 	int n=17;
 	textcolor(11);
 	setposition(70,n-2); cout << "THONG TIN SACH";
-	inforsach(n);
+	informationBook(n);
 	textcolor(6);
-	int dem=0;
-	setposition(14,7);tmp.masach=inputstringmasach(14,7,dem);
-	setposition(15,8);tmp.tensach=inputstringtensach(15,8,dem);
-	setposition(14,9);tmp.tacgia=inputstringtacgia(14,9,dem);
-	setposition(19,10);tmp.nhaxuatban=inputstringtacgia(19,10,dem);
-	setposition(14,11);tmp.giaban=inputsothuc(14,11,dem);
-	setposition(20,12);tmp.nam=inputsonguyen(20,12,dem);
-	setposition(15,13);tmp.sotrang=inputsonguyen(15,13,dem);
+	int iCount =0;
+	setposition(14,7);tmp.masach=inputstringmasach(14,7,iCount );
+	setposition(15,8);tmp.tensach=inputstringtensach(15,8,iCount );
+	setposition(14,9);tmp.tacgia=inputstringtacgia(14,9,iCount );
+	setposition(19,10);tmp.nhaxuatban=inputstringtacgia(19,10,iCount );
+	setposition(14,11);tmp.giaban=inputsothuc(14,11,iCount );
+	setposition(20,12);tmp.nam=inputsonguyen(20,12,iCount );
+	setposition(15,13);tmp.sotrang=inputsonguyen(15,13,iCount );
 	tmp.tinhtrangsach=0;
 	time_t now = time(0);
 	tm *ltm=localtime(&now);
@@ -863,13 +863,13 @@ void themsach()
 	nam+=1900;
 	tmp.ngaynhap=to_string(day)+"/"+to_string(month)+"/"+to_string(nam);
 	textcolor(14);
-	if (dem!=0)
+	if (iCount !=0)
 	{
 		setposition(100,5);
 		cout << "LOI NHAP SAI HE THONG!";
 		goto hoi;
 	}
-	if (checksach(tmp))
+	if ( checkBook(tmp))
 	{
 		setposition(100,5);
 		cout << "SACH DA TON TAI!";
@@ -882,9 +882,9 @@ void themsach()
 		savedatasach();
 	}
 	hoi:
-	ham(n,n-1);
+	 function(n,n-1);
 }
-void kiemtramasach(string s)
+void checkBookCode(string s)
 {
 	Sach k;
 	textcolor(14);
@@ -906,7 +906,7 @@ void kiemtramasach(string s)
 	}	
 	setposition(100,5); cout << "SACH KHONG TON TAI";
 }
-void xoasach()
+void deleteBook()
 {
 	system("cls");
 	string s;
@@ -915,21 +915,21 @@ void xoasach()
 	textcolor(11);
 	int n=11;
 	setposition(5,n-2); cout << "THONG TIN SACH";
-	inforsach(n);
+	informationBook (n);
 	textcolor(6);
-	int dem=0;
-	setposition(27,7);s=inputstringmasach(27,7,dem);
-	if (dem!=0)
+	int iCount =0;
+	setposition(27,7);s=inputstringmasach(27,7,iCount );
+	if (iCount !=0)
 	{
 		setposition(100,5);
 		cout << "LOI NHAP SAI HE THONG!";
 		goto hoi;
 	}
-	kiemtramasach(s);
+	checkBookCode(s);
 	hoi:
-	ham(n,n-1);
+	 function(n,n-1);
 }
-void quanlysach()
+void bookManagement()
 {
 	while(true)
 	{
@@ -979,17 +979,17 @@ void quanlysach()
 				textcolor(7);
 				if (null==0)
 				{
-					hienthi();
+					 display();
 					break;
 				}
 				if (null==1)
 				{
-					themsach();
+					moreBook();
 					break;
 				}
 				if (null==2)
 				{
-					xoasach();
+					deleteBook();
 					break;
 				}
 				if (null==3)
@@ -999,7 +999,7 @@ void quanlysach()
 	}
 }
 
-void xuatphieu(Phieu ph,int n)
+void publishingTicket(Phieu ph,int n)
 {
 	setposition(5,n); cout << ph.sophieu;
 	setposition(29,n); cout << ph.mabandoc;
@@ -1008,7 +1008,7 @@ void xuatphieu(Phieu ph,int n)
 	setposition(94,n); cout << ph.ngaytra;
 	setposition(120,n); cout << ph.tinhtrang;
 }
-void inforphieu(int& n)
+void informationTicket(int& n)
 {
 	textcolor(14);
 	setposition(5,n); cout << "SO PHIEU MUON";
@@ -1018,77 +1018,77 @@ void inforphieu(int& n)
 	setposition(94,n); cout << "NGAY PHAI TRA";
 	setposition(120,n); cout << "TINH TRANG PHIEU MUON";
 	textcolor(9);
-	int so=n;
+	int iNumber =n;
 	for (int i=0;i<=Ph.size()+1;i++)
 	{
 		if (i==1)
 		{
-			so++;
+			iNumber ++;
 			continue;
 		}
-		write(4,so,"|");
-		write(28,so,"|");
-		write(51,so,"|");
-		write(70,so,"|");
-		write(93,so,"|");
-		write(119,so,"|");
-		write(155,so,"|");
-		so++;
+		write(4,iNumber ,"|");
+		write(28,iNumber ,"|");
+		write(51,iNumber ,"|");
+		write(70,iNumber ,"|");
+		write(93,iNumber ,"|");
+		write(119,iNumber ,"|");
+		write(155,iNumber ,"|");
+		iNumber ++;
 	}
-	int chay=n-2;
+	int iRun=n-2;
 	for (int i=1;i<=3;i++)
 	{
 		if (i==3)
 		{
 			if (!Ph.empty())
 				for (int j=4;j<=154;j+=2)
-					write(j,chay+Ph.size()+1,"--");
+					write(j,iRun+Ph.size()+1,"--");
 			break;
 		}
-		chay+=i;
+		iRun+=i;
 			
 		for (int j=4;j<=154;j+=2)
-			write(j,chay,"--");
+			write(j,iRun,"--");
 	}
 	n+=2;
 	textcolor(15);
 	for (list<Phieu>::iterator i=Ph.begin();i!=Ph.end();i++)
-		xuatphieu(*i,n++);
+		publishingTicket(*i,n++);
 	n+=3;
 }
-void thongtin()
+void information ()
 {
 	system("cls");
 	int n=10;
-	inforphieu(n);
-	ham(n,n-1);
+	informationTicket(n);
+	 function(n,n-1);
 }
-int so=0;
+int iNumber =0;
 void checkbook(Sach pp,string a)
 {
 	if (pp.masach==a)
 	{
 		if (pp.tinhtrangsach==0)
-			so=1;
-		so++;
+			iNumber =1;
+		iNumber ++;
 	}	
 }
-bool checkbandoc(User us,string a)
+bool checkReader(User us,string a)
 {
 	if (us.ma==a)
 		return true;
 	return false;
 }
-void truyvet(Sach& sa,string a)
+void trace(Sach& sa,string a)
 {
 	Phieu tmp;
 	for (list<User>::iterator i=Us.begin();i!=Us.end();i++)
 	{
-		if (checkbandoc(*i,a))
+		if (checkReader(*i,a))
 		{
-			so++;
-			sa.tinhtrangsach=ddem;
-			tmp.sophieu=ddem;
+			iNumber ++;
+			sa.tinhtrangsach=iCount ;
+			tmp.sophieu=iCount ;
 			tmp.mabandoc=a;
 			tmp.masach=sa.masach;
 			time_t now = time(0);
@@ -1150,7 +1150,7 @@ void truyvet(Sach& sa,string a)
 			}
 			tmp.ngaytra=to_string(day)+"/"+to_string(month)+"/"+to_string(nam);
 			tmp.tinhtrang=1;
-			ddem++;
+			iCount ++;
 			Ph.push_back(tmp);
 			savedataphieu();
 			savedatasach();
@@ -1158,7 +1158,7 @@ void truyvet(Sach& sa,string a)
 		}
 	}
 }
-void muonsach()
+void borrowBook()
 {
 	system("cls");
 	textcolor(15);
@@ -1170,21 +1170,21 @@ void muonsach()
 	int n=10;
 	textcolor(11);
 	setposition(5,n-2);cout << "THONG TIN SACH";
-	inforsach(n);
+	informationBook(n);
 	textcolor(11);
 	n++;
  	setposition(5,n-2);cout << "THONG TIN PHIEU";
-	inforphieu(n);
+	informationTicket(n);
 	textcolor(11);
 	n++;
 	setposition(5,n-2);cout << "THONG TIN USER";
-	inforuser(n);
-	int dem=0;
-	so=0;
+	 informationUser (n);
+	int iCount =0;
+	iNumber =0;
 	textcolor(6);
-	setposition(14,5);book=inputstringmasach(14,5,dem);
-	setposition(17,6);bn=inputstringmasach(17,6,dem);
-	if (dem!=0)
+	setposition(14,5);book=inputstringmasach(14,5,iCount );
+	setposition(17,6);bn=inputstringmasach(17,6,iCount );
+	if (iCount !=0)
 	{
 		setposition(100,5);
 		cout << "LOI NHAP SAI HE THONG!";
@@ -1193,40 +1193,40 @@ void muonsach()
 	for (list<Sach>::iterator i=Sa.begin();i!=Sa.end();i++)
 	{
 		checkbook(*i,book);
-		if (so==2)
+		if (iNumber ==2)
 		{
-			truyvet(*i,bn);
+			trace(*i,bn);
 			break;
 		}
-		if (so==1)
+		if (iNumber ==1)
 			break;
-		so=0;
+		iNumber =0;
 	}
 	textcolor(14);
-	if (so==0)
+	if (iNumber ==0)
 	{
 		setposition(100,5);
 		cout << "SACH KHONG TON TAI";
 	}
-	if (so==1)
+	if (iNumber ==1)
 	{
 		setposition(100,5);
 		cout << "SACH DANG DUOC MUON";
 	}
-	if (so==2)
+	if (iNumber ==2)
 	{
 		setposition(100,5);
 		cout << "MA BAN DOC KHONG TON TAI";
 	}
-	if (so==3)
+	if (iNumber ==3)
 	{
 		setposition(100,5);
 		cout << "SACH MUON THANH CONG";
 	}
 	hoi:
-	ham(n,n-1);
+	 function(n,n-1);
 }
-bool timsach(Sach& tmp,string a)
+bool findBook(Sach& tmp,string a)
 {
 	if (tmp.masach==a)
 	{
@@ -1235,29 +1235,29 @@ bool timsach(Sach& tmp,string a)
 	}
 	return false;
 }
-bool checkphieumuon(Phieu& tmp,int n)
+bool checkTitket(Phieu& tmp,int n)
 {
-	so=0;
+	iNumber =0;
 	if (n==tmp.sophieu)
 	{
-		so=1;
+		iNumber =1;
 		if (tmp.tinhtrang!=0)
 		{
 			tmp.tinhtrang=0;
 			for (auto i=Sa.begin();i!=Sa.end();i++)
-				if (timsach(*i,tmp.masach))
+				if (findBook(*i,tmp.masach))
 				{
 					savedataphieu();
 					savedatasach();
 					break;
 				}
-			so=2;
+			iNumber =2;
 		}
 		return true;	
 	}
 	return false;
 }
-void trasach()
+void returnBook()
 {
 	system("cls");
 	textcolor(15);
@@ -1268,45 +1268,45 @@ void trasach()
 	int n=11;
 	textcolor(11);
 	setposition(5,n-2);cout << "THONG TIN SACH";
-	inforsach(n);
+	informationBook(n);
 	textcolor(11);
 	n++;
  	setposition(5,n-2);cout << "THONG TIN PHIEU";
-	inforphieu(n);
+	informationTicket(n);
 	textcolor(6);
 	long tmp;
-	int dem=0;
-	setposition(20,7);tmp=inputsonguyen(20,7,dem);
-	if (dem!=0)
+	int iCount =0;
+	setposition(20,7);tmp=inputsonguyen(20,7,iCount );
+	if (iCount !=0)
 	{
 		setposition(100,5);
 		cout << "LOI NHAP SAI HE THONG!";
 		goto hoi;
 	}
 	for (list<Phieu>::iterator i=Ph.begin();i!=Ph.end();i++)
-		if (checkphieumuon(*i,tmp))
+		if (checkTitket(*i,tmp))
 			break;
 	textcolor(14);
-	if (so==0)
+	if (iNumber ==0)
 	{
 		setposition(100,5);
 		cout << "PHIEU MUON KHONG TON TAI!";
 	}
-	if (so==1)
+	if (iNumber ==1)
 	{
 		setposition(100,5);
 		cout << "KHONG THE TRA SACH!";
 	}
-	if (so==2)
+	if (iNumber ==2)
 	{
 		setposition(100,5);
 		cout << "TRA SACH THANH CONG!";
 	}
 	textcolor(14);
 	hoi:
-	ham(n,n-1);
+	 function(n,n-1);
 }
-void quanlyphieumuon()
+void manageTicket()
 {
 	while(true)
 	{
@@ -1355,17 +1355,17 @@ void quanlyphieumuon()
 			{
 				if (null==0)
 				{
-					thongtin();
+					information ();
 					break;
 				}
 				if (null==1)
 				{
-					muonsach();
+					borrowBook();
 					break;
 				}
 				if (null==2)
 				{
-					trasach();
+					returnBook();
 					break;
 				}
 				if (null==3)
@@ -1424,12 +1424,12 @@ bool menu()
 			{
 				if (null==0)
 				{
-					quanlysach();
+					bookManagement();
 					break;
 				}
 				if (null==1)
 				{
-					quanlyphieumuon();
+					manageTicket();
 					break;
 				}
 				if (null==2)
