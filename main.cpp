@@ -237,7 +237,7 @@ void DATA()
 {
 	CAdmin A({"",""});
 	CUser U;
-	inBook.open("Book .txt",ios_base::in);
+	inBook.open("Book.txt",ios_base::in);
 	inAdmin.open("Admin.txt",ios_base::in);
 	CBook  S;
 	inTicket.open("Ticket.txt",ios_base::in);
