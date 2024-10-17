@@ -206,14 +206,14 @@ vector<CAdmin> Ad;
 list<CBook > Sa;
 list<CTicket> Ph;
 list<CUser> Us;
-void savedatasach()
+void saveDataBook()
 {
 	outBook.open("Book.txt",ios_base::out);
 	for (auto it=Sa.begin();it!=Sa.end();it++)
 		outBook << *it;
 	outBook.close();
 }
-void savedataphieu()
+void saveDataTicket()
 {
 	outTicket.open("Ticket.txt",ios_base::out);
 	for (auto it=Ph.begin();it!=Ph.end();it++)
@@ -273,7 +273,7 @@ void DATA()
 	inTicket.close();
 	inUser.close();
 }
-string input_password(int x,int y)
+string inputPassword(int x,int y)
 {
 	string tmp;
 	char a;
@@ -333,12 +333,12 @@ string input(int x,int y,int& iCount )
 	while (13!=a);
 		return tmp;
 }
-string inputstringtacgia(int x,int y,int& iCount )
+string inputStringAuthor(int x,int y,int& iCount )
 {
 	string tmp="";
 	char a;
 	char b;
-	int so=0;
+	int iNumber=0;
 	do
 	{
 		a=_getch();
@@ -348,7 +348,7 @@ string inputstringtacgia(int x,int y,int& iCount )
 			if (((b>=65 && b<=90) || (b>=97 && b<=122) || b==' '))
 				goto hoi;
 			else
-				so--;
+				iNumber--;
 			hoi:
 			tmp.resize(tmp.size()-1);
 			setposition(x-1,y); cout << char(32);
@@ -369,7 +369,7 @@ string inputstringtacgia(int x,int y,int& iCount )
 			{
 				if (a==8)
 					continue;
-				so++;
+				iNumber++;
 				tmp.push_back(a);
 				setposition(x,y); cout << a;
 				x++;
@@ -378,18 +378,18 @@ string inputstringtacgia(int x,int y,int& iCount )
 	}
 	while (13!=a);
 	{
-		iCount +=so;
-		if (so==0)
+		iCount +=iNumber;
+		if (iNumber==0)
 			return tmp;
 		return "";
 	}
 }
-string inputstringtensach(int x,int y,int& iCount )
+string inputStringBookTitle(int x,int y,int& iCount )
 {
 	string tmp="";
 	char a;
 	char b;
-	int so=0;
+	int iNumber =0;
 	do
 	{
 		a=_getch();
@@ -401,7 +401,7 @@ string inputstringtensach(int x,int y,int& iCount )
 			if (((b>=65 && b<=90) || (b>=97 && b<=122) || (b>='0' && b<='9') || b==' ' || b=='&' || b=='-'))
 				goto hoi;
 			else
-				so--;
+				iNumber --;
 			hoi:
 			tmp.resize(tmp.size()-1);
 			setposition(x-1,y); cout << char(32);
@@ -422,7 +422,7 @@ string inputstringtensach(int x,int y,int& iCount )
 			{
 				if (a==8)
 					continue;
-				so++;
+				iNumber++;
 				tmp.push_back(a);
 				setposition(x,y); cout << a;
 				x++;
@@ -431,18 +431,18 @@ string inputstringtensach(int x,int y,int& iCount )
 	}
 	while (13!=a);
 	{
-		iCount +=so;
-		if (so==0)
+		iCount += iNumber;
+		if (iNumber==0)
 			return tmp;
 		return "";
 	}
 }
-string inputstringmasach(int x,int y,int& iCount )
+string inputStringBookCode(int x,int y,int& iCount )
 {
 	string tmp="";
 	char a;
 	char b;
-	int so=0;
+	int iNumber=0;
 	do
 	{
 		a=_getch();
@@ -453,7 +453,7 @@ string inputstringmasach(int x,int y,int& iCount )
 			b=tmp[tmp.size()-1];
 			if ((b>=65 && b<=90) || (b>=97 && b<=122) || (b>='0' && b<='9'))
 				goto hoi;
-			so--;
+			iNumber--;
 			hoi:
 			tmp.resize(tmp.size()-1);
 			setposition(x-1,y); cout << char(32);
@@ -463,7 +463,7 @@ string inputstringmasach(int x,int y,int& iCount )
 		}
 		if (a==' ')
 		{
-			so++;
+			iNumber++;
 			setposition(x,y); cout << a;
 			tmp.push_back(a);
 			x++;
@@ -480,7 +480,7 @@ string inputstringmasach(int x,int y,int& iCount )
 		{
 			if (a==8)
 				continue;
-			so++;
+			iNumber++;
 			setposition(x,y); cout << a;
 			tmp.push_back(a);
 			x++;
@@ -488,26 +488,26 @@ string inputstringmasach(int x,int y,int& iCount )
 	}
 	while (13!=a);
 	{
-		iCount +=so;
-		if (so==0)
+		iCount +=iNumber;
+		if (iNumber==0)
 			return tmp;
 		return "";
 	}
 }
 template <class T>
-T chuyenso(string tmp)
+T changeNumber(string tmp)
 {
 	stringstream ss(tmp);
 	T k;
 	ss >> k;
 	return k;
 }
-float inputsothuc(int x,int y,int& iCount )
+float inputRealNumber(int x,int y,int& iCount )
 {
 	string tmp="";
 	char a;
 	char b;
-	int so=0;
+	int iNumber=0;
 	do
 	{
 		a=_getch();
@@ -519,7 +519,7 @@ float inputsothuc(int x,int y,int& iCount )
 			if ((b>=48 && b<=57) || b == '.')
 				goto hoi;
 			else
-				so--;
+				iNumber--;
 			hoi:
 			tmp.resize(tmp.size()-1);
 			setposition(x-1,y); cout << char(32);
@@ -541,23 +541,23 @@ float inputsothuc(int x,int y,int& iCount )
 			setposition(x,y); cout << a;
 			tmp.push_back(a);
 			x++;
-			so++;
+			iNumber++;
 		}
 	}
 	while (13!=a);
 	{
-		iCount +=so;
-		if (so==0 && tmp.size()<=10)
-			return chuyenso<float>(tmp);
+		iCount +=iNumber;
+		if (iNumber==0 && tmp.size()<=10)
+			return changeNumber<float>(tmp);
 		else
 			return -1;
 	}
 }
-long inputsonguyen(int x,int y,int& iCount )
+long inputInteger(int x,int y,int& iCount )
 {
 	string tmp="";
 	char a,b;
-	int so=0;
+	int iNumber=0;
 	do
 	{
 		a=_getch();
@@ -569,7 +569,7 @@ long inputsonguyen(int x,int y,int& iCount )
 			if ((b>=48 && b<=57))
 				goto hoi;
 			else
-				so--;
+				iNumber--;
 			hoi:
 			tmp.resize(tmp.size()-1);
 			setposition(x-1,y); cout << char(32);
@@ -591,15 +591,15 @@ long inputsonguyen(int x,int y,int& iCount )
 			setposition(x,y); cout << a;
 			tmp.push_back(a);
 			x++;
-			so++;
+			iNumber++;
 		}
 		
 	}
 	while (13!=a);
 	{
-		iCount +=so;
-		if (so==0 && tmp.size()<=10)
-			return chuyenso<long>(tmp);
+		iCount +=iNumber;
+		if (iNumber==0 && tmp.size()<=10)
+			return changeNumber<long>(tmp);
 		else
 			return -1;
 	}
@@ -664,9 +664,9 @@ bool checkuser(string a,string b)
 }
 void run()
 {
-	int so=3;
+	int iNumber=3;
 	int iRun =0;
-	while (so!=0)
+	while (iNumber!=0)
 	{
 		int iCount =0;
 		string U_ser;
@@ -678,7 +678,7 @@ void run()
 			textcolor(11);
 			cout << "User hoac Password sai, Ban con ";
 			textcolor(12);
-			cout << so;
+			cout << iNumber;
 			textcolor(11);
 			cout << " luot nhap";
 		}
@@ -689,11 +689,11 @@ void run()
 		textcolor(15);
 		U_ser=input(72,21,iCount );
 		setposition(76,23);
-		P_ass=input_password(76,23);
+		P_ass=inputPassword(76,23);
 		if (checkuser(U_ser,P_ass))
 			return;
 		iRun ++;
-		so--;
+		iNumber--;
 		system("cls");
 	}
 	exit(0);
@@ -855,13 +855,13 @@ void moreBook()
 	informationBook(n);
 	textcolor(6);
 	int iCount =0;
-	setposition(14,7);tmp.strBookCode =inputstringmasach(14,7,iCount );
-	setposition(15,8);tmp.strBookTitle=inputstringtensach(15,8,iCount );
-	setposition(14,9);tmp.strAuthor=inputstringtacgia(14,9,iCount );
-	setposition(19,10);tmp.strPublisher=inputstringtacgia(19,10,iCount );
-	setposition(14,11);tmp.fPrice=inputsothuc(14,11,iCount );
-	setposition(20,12);tmp.lYear=inputsonguyen(20,12,iCount );
-	setposition(15,13);tmp.lpage=inputsonguyen(15,13,iCount );
+	setposition(14,7);tmp.strBookCode =inputStringBookCode(14,7,iCount );
+	setposition(15,8);tmp.strBookTitle=inputStringBookTitle(15,8,iCount );
+	setposition(14,9);tmp.strAuthor=inputStringAuthor(14,9,iCount );
+	setposition(19,10);tmp.strPublisher=inputStringAuthor(19,10,iCount );
+	setposition(14,11);tmp.fPrice=inputRealNumber(14,11,iCount );
+	setposition(20,12);tmp.lYear=inputInteger(20,12,iCount );
+	setposition(15,13);tmp.lpage=inputInteger(15,13,iCount );
 	tmp.lBookStatus=0;
 	time_t now = time(0);
 	tm *ltm=localtime(&now);
@@ -888,7 +888,7 @@ void moreBook()
 		setposition(100,5);
 		cout << "THEM SACH THANH CONG!";
 		Sa.push_back(tmp);
-		savedatasach();
+		saveDataBook();
 	}
 	hoi:
 	 function(n,n-1);
@@ -906,7 +906,7 @@ void checkBookCode(string s)
 			{
 				Sa.erase(i);
 				setposition(100,5); cout << "XOA SACH THANH CONG";
-				savedatasach();
+				saveDataBook();
 				return;
 			}
 			setposition(100,5); cout << "SACH DANG DUOC MUON";
@@ -927,7 +927,7 @@ void deleteBook()
 	informationBook (n);
 	textcolor(6);
 	int iCount =0;
-	setposition(27,7);s=inputstringmasach(27,7,iCount );
+	setposition(27,7);s=inputStringBookCode(27,7,iCount );
 	if (iCount !=0)
 	{
 		setposition(100,5);
@@ -1161,8 +1161,8 @@ void trace(CBook & sa,string a)
 			tmp.lPaymentDate=1;
 			iCount ++;
 			Ph.push_back(tmp);
-			savedataphieu();
-			savedatasach();
+			saveDataTicket();
+			saveDataBook();
 			return;
 		}
 	}
@@ -1191,8 +1191,8 @@ void borrowBook()
 	int iCount =0;
 	iNumber =0;
 	textcolor(6);
-	setposition(14,5);book=inputstringmasach(14,5,iCount );
-	setposition(17,6);bn=inputstringmasach(17,6,iCount );
+	setposition(14,5);book=inputStringBookCode(14,5,iCount );
+	setposition(17,6);bn=inputStringBookCode(17,6,iCount );
 	if (iCount !=0)
 	{
 		setposition(100,5);
@@ -1256,8 +1256,8 @@ bool checkTitket(CTicket& tmp,int n)
 			for (auto i=Sa.begin();i!=Sa.end();i++)
 				if (findBook(*i,tmp.strBookCode ))
 				{
-					savedataphieu();
-					savedatasach();
+					saveDataTicket();
+					saveDataBook();
 					break;
 				}
 			iNumber =2;
@@ -1285,7 +1285,7 @@ void returnBook()
 	textcolor(6);
 	long tmp;
 	int iCount =0;
-	setposition(20,7);tmp=inputsonguyen(20,7,iCount );
+	setposition(20,7);tmp=inputInteger(20,7,iCount );
 	if (iCount !=0)
 	{
 		setposition(100,5);
