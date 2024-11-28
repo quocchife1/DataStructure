@@ -22,7 +22,7 @@ ofstream outBook;
 ofstream outTicket;
 ofstream outUser ;
 
-
+// cac ham thiet ke giao dien
 void setposition( int x, int y)
 {
 	CursorPosition.X=x;
@@ -58,6 +58,212 @@ void write(int x, int y, string z)
 	setposition(x, y);
 	cout << z;
 }
+
+//Chuan bi danh sach lien ket
+template <class DataType>
+class LinkedList;
+
+template <class DataType>
+class Node {
+    friend class LinkedList<DataType>;
+private:
+    DataType _data;
+    Node* _pNext;
+public:
+    Node(DataType data);
+    void display();
+};
+
+template <class DataType>
+class LinkedList {
+private:
+    Node<DataType>* _pHead;
+    Node<DataType>* _pTail;
+    int _iSize;
+
+public:
+    LinkedList();
+    ~LinkedList();
+
+    void addHead(DataType data);
+    void addTail(DataType data);
+    void addAfter(DataType q, DataType data);
+    void addUnique(DataType data);
+    void display();
+
+    void removeHead();
+    void removeTail();
+    void removeAfter(Node<DataType> *data);
+    void remove(DataType data);
+    void clear();
+    void readFromFile(const string& filename);
+    void writeToFile(const string& filename);
+};
+
+// Implementation of Node methods
+template <class DataType>
+Node<DataType>::Node(DataType data) : _data(data), _pNext(nullptr) {}
+
+template <class DataType>
+void Node<DataType>::display() {
+    cout << _data << " ";
+}
+
+// Implementation of LinkedList methods
+template <class DataType>
+LinkedList<DataType>::LinkedList() : _pHead(nullptr), _pTail(nullptr), _iSize(0) {}
+
+template <class DataType>
+LinkedList<DataType>::~LinkedList() {
+    clear();
+}
+
+template <class DataType>
+void LinkedList<DataType>::addHead(DataType data) {
+    Node<DataType>* pAdd = new Node<DataType>(data);
+    if (_pHead == nullptr) {
+        _pHead = _pTail = pAdd;
+    } else {
+        pAdd->_pNext = _pHead;
+        _pHead = pAdd;
+    }
+    ++_iSize;
+}
+
+template <class DataType>
+void LinkedList<DataType>::addTail(DataType data) {
+    Node<DataType>* pAdd = new Node<DataType>(data);
+    if (_pHead == nullptr) {
+        _pHead = _pTail = pAdd;
+    } else {
+        _pTail->_pNext = pAdd;
+        _pTail = pAdd;
+    }
+    ++_iSize;
+}
+
+template <class DataType>
+void LinkedList<DataType>::addAfter(DataType q, DataType data) {
+    Node<DataType>* pWalker = _pHead;
+    while (pWalker != nullptr) {
+        if (pWalker->_data == q) {
+            Node<DataType>* pAdd = new Node<DataType>(data);
+            pAdd->_pNext = pWalker->_pNext;
+            pWalker->_pNext = pAdd;
+
+            if (pWalker == _pTail) {
+                _pTail = pAdd;
+            }
+            ++_iSize;
+            return;
+        }
+        pWalker = pWalker->_pNext;
+    }
+    cout << "Element " << q << " not found!" << endl;
+}
+
+template <class DataType>
+void LinkedList<DataType>::addUnique(DataType data) {
+    Node<DataType>* pWalker = _pHead;
+    while (pWalker != nullptr) {
+        if (pWalker->_data == data) {
+            cout << "Element " << data << " already exists!" << endl;
+            return;
+        }
+        pWalker = pWalker->_pNext;
+    }
+    addTail(data);
+}
+
+template <class DataType>
+void LinkedList<DataType>::remove(DataType data) {
+    if (_pHead == nullptr) return;
+
+    if (_pHead->_data == data) {
+        Node<DataType>* temp = _pHead;
+        _pHead = _pHead->_pNext;
+        delete temp;
+        --_iSize;
+        return;
+    }
+
+    Node<DataType>* current = _pHead;
+    while (current->_pNext != nullptr && current->_pNext->_data != data) {
+        current = current->_pNext;
+    }
+
+    if (current->_pNext != nullptr) {
+        Node<DataType>* temp = current->_pNext;
+        current->_pNext = temp->_pNext;
+        if (temp == _pTail) {
+            _pTail = current;
+        }
+        delete temp;
+        --_iSize;
+    } else {
+        cout << "Element " << data << " not found!" << endl;
+    }
+}
+
+template <class DataType>
+void LinkedList<DataType>::display() {
+    Node<DataType>* pWalker = _pHead;
+    while (pWalker != nullptr) {
+        pWalker->display();
+        pWalker = pWalker->_pNext;
+    }
+    cout << endl;
+}
+
+template <class DataType>
+void LinkedList<DataType>::clear() {
+    Node<DataType>* current = _pHead;
+    while (current != nullptr) {
+        Node<DataType>* nextNode = current->_pNext;
+        delete current;
+        current = nextNode;
+    }
+    _pHead = _pTail = nullptr;
+    _iSize = 0;
+}
+
+
+//viet lai ham doc file cho phu hop
+template <class DataType>
+void LinkedList<DataType>::readFromFile(const string& filename) {
+    ifstream file(filename);
+    if (!file.is_open()) {
+        cout << "Error opening file!" << endl;
+        return;
+    }
+
+    DataType data;
+    while (file >> data) {
+        addTail(data);
+    }
+
+    file.close();
+}
+
+//viet lai ham ghi file cho phu hop
+template <class DataType>
+void LinkedList<DataType>::writeToFile(const string& filename) {
+    ofstream file(filename);
+    if (!file.is_open()) {
+        cout << "Error opening file!" << endl;
+        return;
+    }
+
+    Node<DataType>* pWalker = _pHead;
+    while (pWalker != nullptr) {
+        file << pWalker->_data << " ";
+        pWalker = pWalker->_pNext;
+    }
+
+    file.close();
+}
+
+//Cac lop chinh
 class  CBook {
 	public:
 		string strBookCode ;
