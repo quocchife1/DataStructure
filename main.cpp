@@ -21,8 +21,9 @@ ofstream outAdmin;
 ofstream outBook;
 ofstream outTicket;
 ofstream outUser ;
-template< class T >
-void setposition( T x, T y)
+
+
+void setposition( int x, int y)
 {
 	CursorPosition.X=x;
 	CursorPosition.Y=y;
@@ -35,39 +36,39 @@ void textcolor(int x)
 	color  = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleTextAttribute(color , x);
 }
-template < class T ,class N >
-void gotocolor( T x,T  y, N s,T color )
+
+
+void gotocolor(int x,int y,string s,int color)
 {
 	setposition(x,y);
-	textcolor(color );
+	textcolor(color);
 	cout << s;
 	textcolor(7);
 }
-template< class T >
-void textColor (T x,T y,T color )
+
+void textColor (int x,int y,int color )
 {
 	setposition(x,y);
-	textcolor(color );
+	textcolor(color);
 	textcolor(7);
 }
-template < class T ,class N >
-void write( T x, T y, N z)
+
+void write(int x, int y, string z)
 {
 	setposition(x, y);
 	cout << z;
 }
-template < class T ,class N >
 class  CBook {
 	public:
-		N strBookCode ;
-		N strBookTitle;
-		N strAuthor;
-		N strPublisher;
-		T fPrice;
-		T lYear;
-		T lpage;
-		N strDate;
-		T lBookStatus;
+		string strBookCode ;
+		string strBookTitle;
+		string strAuthor;
+		string strPublisher;
+		float fPrice;
+		long lYear;
+		long lpage;
+		string strDate;
+		long lBookStatus;
 	public:
 		void operator = (CBook  s)
 		{
@@ -107,15 +108,14 @@ class  CBook {
 			return (strBookCode ==s.strBookCode );
 		}
 };
-template <class T , class N >
 class CTicket{
 	public:
-		T lNumberTicket;
-		N strReaderCode;
-		N strBookCode ;
-		N strLoanDate;
-		N strPaymentDate;
-		T lPaymentDate;
+		long lNumberTicket;
+		string strReaderCode;
+		string strBookCode ;
+		string strLoanDate;
+		string strReturnDate;
+		long lPaymentDate;
 	public:
 		void operator = (CTicket p)
 		{
@@ -133,24 +133,23 @@ class CTicket{
 			getline(is,p.strReaderCode);
 			getline(is,p.strBookCode );
 			getline(is,p.strLoanDate);
-			getline(is,p.strPaymentDate);
+			getline(is,p.strReturnDate);
 			is >> p.lPaymentDate;
 			is.ignore();
 			return is;
 		}
 		friend ostream& operator << (ostream& os,CTicket p)
 		{
-			os << p.lNumberTicket << '\n' << p.strReaderCode << '\n' << p.strBookCode  << '\n' << p.strLoanDate << '\n' << p.strPaymentDate << '\n' << p.lPaymentDate << '\n';
+			os << p.lNumberTicket << '\n' << p.strReaderCode << '\n' << p.strBookCode  << '\n' << p.strLoanDate << '\n' << p.strReturnDate << '\n' << p.lPaymentDate << '\n';
 			return os;
 		}
 };
-template <class N >
 class CAdmin{
-	N strUser ;
-	N strPassWord;
+	string strUser ;
+	string strPassWord;
 	public:
-		N getuser(){return strUser ;}
-		N getstrPassWord(){return strPassWord;}
+		string getuser(){return strUser ;}
+		string getstrPassWord(){return strPassWord;}
 		bool operator == (CAdmin a)
 		{
 			if (strUser ==a.strUser  && strPassWord==a.strPassWord)
@@ -162,10 +161,10 @@ class CAdmin{
 			strUser =a.strUser ;
 			strPassWord=a.strPassWord;
 		}
-		CAdmin( N a, N b)
+		CAdmin(string a, string b)
 		{
-			strUser =a;
-			strPassWord=b;
+			strUser = a;
+			strPassWord = b;
 		}
 		~CAdmin(){}
 		friend istream& operator >> (istream& is,CAdmin& ad)
@@ -180,12 +179,12 @@ class CAdmin{
 			return os;
 		}
 };
-template <class N >
+
 class CUser{
 	public:
-		N strUserCode;
-		N strName;
-		N strRegistrationDate;
+		string strUserCode;
+		string strName;
+		string strRegistrationDate;
 	public:
 		void operator = (CUser us)
 		{
@@ -237,9 +236,9 @@ void DATA()
 {
 	CAdmin A({"",""});
 	CUser U;
-	inBook.open("Book .txt",ios_base::in);
+	inBook.open("Book.txt",ios_base::in);
 	inAdmin.open("Admin.txt",ios_base::in);
-	CBook  S;
+	CBook S;
 	inTicket.open("Ticket.txt",ios_base::in);
 	inUser.open("User.txt",ios_base::in);
 	while(!inAdmin.eof())
@@ -258,7 +257,7 @@ void DATA()
 	{
 		CTicket P({0,"","","","",-1});
 		inTicket >> P;
-		if (P.strReaderCode=="" && P.strBookCode =="" && P.strPaymentDate=="" && P.lPaymentDate==-1)
+		if (P.strReaderCode=="" && P.strBookCode =="" && P.strReturnDate=="" && P.lPaymentDate==-1)
 			continue;
 		iCount ++;
 		Ph.push_back(P);
@@ -605,7 +604,7 @@ long inputInteger(int x,int y,int& iCount )
 	}
 }
 
-void  function(int n,int k)
+void menuFunction(int n,int k)
 {
 	textcolor(14);
 	setposition(102,k); cout << "<-";
@@ -658,7 +657,7 @@ void  function(int n,int k)
 bool checkuser(string a,string b)
 {
 	for (int i=0;i<Ad.size();i++)
-		if (a==Ad[i].getuser() && b==Ad[i].getpassword())
+		if (a==Ad[i].getuser() && b==Ad[i].getstrPassWord())
 			return true;
 	return false;
 }
@@ -725,12 +724,12 @@ void informationBook(int& n)
 	gotocolor(120,n,"NGAY NHAP KHO",14);
 	gotocolor(137,n,"TINH TRANG SACH",14);
 	textcolor(3);
-	int iNumber =n;
+	int iNumber = n;
 	for (int i=0;i<=Sa.size()+1;i++)
 	{
 		if (i==1)
 		{
-			inumber ++;
+			iNumber++;
 			continue;
 		}
 		write(4,iNumber ,"|");
@@ -745,14 +744,14 @@ void informationBook(int& n)
 		write(155,iNumber ,"|");
 		iNumber ++;
 	}
-	int iRun =n-2;
+	int iRun = n-2;
 	for (int i=1;i<=3;i++)
 	{
 		if (i==3)
 		{
 			if (!Sa.empty())
 				for (int j=4;j<=154;j+=2)
-					write(j,iRun +Sa.size()+1,"--");
+					write(j,iRun + Sa.size()+1,"--");
 			break;
 		}	
 		iRun +=i;
@@ -812,12 +811,12 @@ void  informationUser (int& n)
 		 publishingUser(n++,*it);
 	n+=3;
 }
-void  display()
+void display()
 {
 	int n=10;
 	system("cls");
 	informationBook(n);
-	 function(n,n-1);
+	menuFunction(n, n-1);
 }
 bool  checkBook(CBook  tmp)
 {
@@ -891,7 +890,7 @@ void moreBook()
 		saveDataBook();
 	}
 	hoi:
-	 function(n,n-1);
+	menuFunction(n,n-1);
 }
 void checkBookCode(string s)
 {
@@ -936,7 +935,7 @@ void deleteBook()
 	}
 	checkBookCode(s);
 	hoi:
-	 function(n,n-1);
+	menuFunction(n,n-1);
 }
 void bookManagement()
 {
@@ -1014,7 +1013,7 @@ void publishingTicket(CTicket ph,int n)
 	setposition(29,n); cout << ph.strReaderCode;
 	setposition(52,n); cout << ph.strBookCode ;
 	setposition(71,n); cout << ph.strLoanDate;
-	setposition(94,n); cout << ph.strPaymentDate;
+	setposition(94,n); cout << ph.strReturnDate;
 	setposition(120,n); cout << ph.lPaymentDate;
 }
 void informationTicket(int& n)
@@ -1070,7 +1069,7 @@ void information ()
 	system("cls");
 	int n=10;
 	informationTicket(n);
-	 function(n,n-1);
+	menuFunction(n,n-1);
 }
 int iNumber =0;
 void checkbook(CBook  pp,string a)
@@ -1157,7 +1156,7 @@ void trace(CBook & sa,string a)
 					}
 				}
 			}
-			tmp.strPaymentDate=to_string(day)+"/"+to_string(month)+"/"+to_string(lYear);
+			tmp.strReturnDate=to_string(day)+"/"+to_string(month)+"/"+to_string(lYear);
 			tmp.lPaymentDate=1;
 			iCount ++;
 			Ph.push_back(tmp);
@@ -1233,7 +1232,7 @@ void borrowBook()
 		cout << "SACH MUON THANH CONG";
 	}
 	hoi:
-	 function(n,n-1);
+	menuFunction(n,n-1);
 }
 bool findBook(CBook & tmp,string a)
 {
@@ -1313,7 +1312,7 @@ void returnBook()
 	}
 	textcolor(14);
 	hoi:
-	 function(n,n-1);
+	menuFunction(n,n-1);
 }
 void manageTicket()
 {
