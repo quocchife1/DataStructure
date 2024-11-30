@@ -1,36 +1,45 @@
 sach1
-Cach Lam Giau
-Pham Nhat Vuong
-Ha Noi
-150000
-2021
-322
-2/11/2021
-4
-sach2
-Lap Trinh & Giai Thuat
-Le Minh Hoang
-Ha Noi
-150000
-2002
-321
-2/11/2021
+Hoc Python Co ban
+Nguyen Van A
+Giao Duc
+120000
+2018
+256
+30/11/2024
 0
+sach2
+Phan tich du lieu voi R
+Le Hai Yen
+DHQG
+170000
+2019
+300
+30/11/2024
+2
 sach3
-Canh Dong Bat Tan
-Nguyen Ngoc Tu
-Tre
-22000
-2006
-220
-2/11/2021
+Tri Tue Nhan Tao
+Pham Van Minh
+LDXH
+230000
+2022
+520
+30/11/2024
 0
 sach4
-7 Vien Ngoc Rong
-Toriyama Akira
-Kim Dong
-22000
-2009
-220
-2/11/2021
+Thiet ke he thong so
+Tran Van Hung
+Bach Khoa
+190000
+2019
+380
+30/11/2024
+0
+sach5
+Khoc hoc  du lieu
+Nguyen Minh Quang
+Tre
+220000
+2012
+450
+30/11/2024
 0

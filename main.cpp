@@ -1,13 +1,7 @@
 #include <bits/stdc++.h>
-#include <iostream>
-#include <list>
-#include <string>
 #include <conio.h>
-#include <vector>
 #include <fstream>
-#include <iomanip>
 #include <Windows.h>
-#include <queue>
 #include <cstdlib>
 #include <ctime>
 using namespace std;
@@ -22,7 +16,7 @@ ofstream outBook;
 ofstream outTicket;
 ofstream outUser ;
 
-// cac ham thiet ke giao dien
+
 void setposition( int x, int y)
 {
 	CursorPosition.X=x;
@@ -36,7 +30,6 @@ void textcolor(int x)
 	color  = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleTextAttribute(color , x);
 }
-
 
 void gotocolor(int x,int y,string s,int color)
 {
@@ -59,19 +52,26 @@ void write(int x, int y, string z)
 	cout << z;
 }
 
-//Chuan bi danh sach lien ket
+
 template <class DataType>
 class LinkedList;
 
 template <class DataType>
 class Node {
     friend class LinkedList<DataType>;
-private:
+public:
     DataType _data;
     Node* _pNext;
 public:
-    Node(DataType data);
-    void display();
+    Node(DataType data) : _data(data), _pNext(NULL) {}
+
+    DataType getData() const { return _data; }
+    Node* getNext() const { return _pNext; }
+
+
+    void display() {
+        cout << _data << " ";
+    }
 };
 
 template <class DataType>
@@ -85,33 +85,98 @@ public:
     LinkedList();
     ~LinkedList();
 
+	Node<DataType>* getHead() const { return _pHead; }
+    Node<DataType>* getTail() { return _pTail; }
+
     void addHead(DataType data);
     void addTail(DataType data);
     void addAfter(DataType q, DataType data);
     void addUnique(DataType data);
     void display();
+    void addChar(char c);
+    void removeLastChar();
 
+    string setstring(int x, int y, int &iCount);
+    void addBook();
+    void checkBookCode(string s);
+    void deleteBook();
+    void bookManagement();
+    void informationTicket(int &n);
+    void information();
+    void borrowBook();
+    void returnBook();
+    void manageTicket();
+    bool menu();
     void removeHead();
     void removeTail();
+    void append(const DataType &value);
     void removeAfter(Node<DataType> *data);
     void remove(DataType data);
     void clear();
+	int  getSize();
+	bool isEmpty();
     void readFromFile(const string& filename);
     void writeToFile(const string& filename);
+    Node<DataType> *search(DataType data);
+    bool exists(DataType data);
+
+    void saveDataBook();
+    void saveDataTicket();
+    void login();
+    void DATA();
+    long inputInteger(int x, int y, int &iCount);
+    void menuFunction(int n, int k);
+    string inputPassword(int x, int y);
+    string input(int x, int y, int &iCount, LinkedList<char>& inputList) {
+        char a;
+        do {
+            a = _getch(); 
+
+            if (inputList.getSize() > 100 && a != 8)  
+                continue;
+
+            if (a == 8 && !inputList.isEmpty()) {    
+                inputList.removeTail(); 
+                setposition(--x, y);    
+                cout << " ";            
+                setposition(x, y);      
+                continue;
+            }
+
+            if ((isalpha(a) || isalnum(a) || isprint(a)) && a != ' ') {  
+                setposition(x++, y);    
+                cout << a;              
+                inputList.addTail(a);   
+            }
+
+            if (a == 0x1B) 
+                exit(0);
+
+        } while (a != 13); 
+
+        
+        string result;
+        Node<char>* current = inputList.getHead();
+        while (current != NULL) {
+            result.push_back(current->_data); 
+            current = current->_pNext;
+        }
+
+        return result;
+    }
+    string inputStringAuthor(int x, int y, int &iCount);
+    string inputStringBookTitle(int x, int y, int &iCount);
+    string inputStringBookCode(int x, int y, int &iCount);
+    bool checkUser(string a, string b);
+    void run();
+    string toString();
+    float inputRealNumber(int x, int y, int &iCount);
+    void informationBook(int &n);
+    void informationUser(int &n);
 };
 
-// Implementation of Node methods
 template <class DataType>
-Node<DataType>::Node(DataType data) : _data(data), _pNext(nullptr) {}
-
-template <class DataType>
-void Node<DataType>::display() {
-    cout << _data << " ";
-}
-
-// Implementation of LinkedList methods
-template <class DataType>
-LinkedList<DataType>::LinkedList() : _pHead(nullptr), _pTail(nullptr), _iSize(0) {}
+LinkedList<DataType>::LinkedList() : _pHead(NULL), _pTail(NULL), _iSize(0) {}
 
 template <class DataType>
 LinkedList<DataType>::~LinkedList() {
@@ -119,9 +184,40 @@ LinkedList<DataType>::~LinkedList() {
 }
 
 template <class DataType>
+void LinkedList<DataType>::addChar(char c) {
+    Node<DataType>* pAdd = new Node<DataType>(c);
+    if (_pHead == NULL) {
+        _pHead = _pTail = pAdd;
+    } else {
+        _pTail->_pNext = pAdd;
+        _pTail = pAdd;
+    }
+    ++_iSize;
+}
+
+template <class DataType>
+void LinkedList<DataType>::removeLastChar() {
+    if (_pHead == NULL) return;  
+
+    if (_pHead == _pTail) {
+        delete _pTail;
+        _pHead = _pTail = NULL;
+    } else {
+        Node<DataType>* temp = _pHead;
+        while (temp->_pNext != _pTail) {
+            temp = temp->_pNext;
+        }
+        delete _pTail;
+        _pTail = temp;
+        _pTail->_pNext = NULL;
+    }
+    --_iSize;
+}
+
+template <class DataType>
 void LinkedList<DataType>::addHead(DataType data) {
     Node<DataType>* pAdd = new Node<DataType>(data);
-    if (_pHead == nullptr) {
+    if (_pHead == NULL) {
         _pHead = _pTail = pAdd;
     } else {
         pAdd->_pNext = _pHead;
@@ -133,7 +229,7 @@ void LinkedList<DataType>::addHead(DataType data) {
 template <class DataType>
 void LinkedList<DataType>::addTail(DataType data) {
     Node<DataType>* pAdd = new Node<DataType>(data);
-    if (_pHead == nullptr) {
+    if (_pHead == NULL) {
         _pHead = _pTail = pAdd;
     } else {
         _pTail->_pNext = pAdd;
@@ -145,7 +241,7 @@ void LinkedList<DataType>::addTail(DataType data) {
 template <class DataType>
 void LinkedList<DataType>::addAfter(DataType q, DataType data) {
     Node<DataType>* pWalker = _pHead;
-    while (pWalker != nullptr) {
+    while (pWalker != NULL) {
         if (pWalker->_data == q) {
             Node<DataType>* pAdd = new Node<DataType>(data);
             pAdd->_pNext = pWalker->_pNext;
@@ -165,7 +261,7 @@ void LinkedList<DataType>::addAfter(DataType q, DataType data) {
 template <class DataType>
 void LinkedList<DataType>::addUnique(DataType data) {
     Node<DataType>* pWalker = _pHead;
-    while (pWalker != nullptr) {
+    while (pWalker != NULL) {
         if (pWalker->_data == data) {
             cout << "Element " << data << " already exists!" << endl;
             return;
@@ -177,7 +273,7 @@ void LinkedList<DataType>::addUnique(DataType data) {
 
 template <class DataType>
 void LinkedList<DataType>::remove(DataType data) {
-    if (_pHead == nullptr) return;
+    if (_pHead == NULL) return;
 
     if (_pHead->_data == data) {
         Node<DataType>* temp = _pHead;
@@ -188,11 +284,11 @@ void LinkedList<DataType>::remove(DataType data) {
     }
 
     Node<DataType>* current = _pHead;
-    while (current->_pNext != nullptr && current->_pNext->_data != data) {
+    while (current->_pNext != NULL && current->_pNext->_data != data) {
         current = current->_pNext;
     }
 
-    if (current->_pNext != nullptr) {
+    if (current->_pNext != NULL) {
         Node<DataType>* temp = current->_pNext;
         current->_pNext = temp->_pNext;
         if (temp == _pTail) {
@@ -206,31 +302,70 @@ void LinkedList<DataType>::remove(DataType data) {
 }
 
 template <class DataType>
-void LinkedList<DataType>::display() {
-    Node<DataType>* pWalker = _pHead;
-    while (pWalker != nullptr) {
-        pWalker->display();
-        pWalker = pWalker->_pNext;
-    }
-    cout << endl;
-}
-
-template <class DataType>
 void LinkedList<DataType>::clear() {
     Node<DataType>* current = _pHead;
-    while (current != nullptr) {
+    while (current != NULL) {
         Node<DataType>* nextNode = current->_pNext;
         delete current;
         current = nextNode;
     }
-    _pHead = _pTail = nullptr;
+    _pHead = _pTail = NULL;
     _iSize = 0;
 }
 
+template <class DataType>
+bool LinkedList<DataType>::isEmpty() {
+    return _iSize == 0;
+}
 
-//viet lai ham doc file cho phu hop
+template <class DataType>
+int LinkedList<DataType>::getSize() {
+	return _iSize;
+}
+
+template <class DataType>
+void LinkedList<DataType>::removeTail() {
+    
+    if (_pHead == NULL) {
+        cout << "Danh sách trống. Không thể xóa phần tử!" << endl;
+        return;
+    }
+    if (_pHead == _pTail) {
+        delete _pTail;   
+        _pHead = _pTail = NULL;
+    } else {
+        Node<DataType>* temp = _pHead;
+        while (temp->_pNext != _pTail) {
+            temp = temp->_pNext;
+        }
+        delete _pTail;
+        _pTail = temp;
+        _pTail->_pNext = NULL;
+    }
+    _iSize--;
+}
+
+template <class DataType>
+void LinkedList<DataType>::append(const DataType& value) {
+    
+    Node<DataType>* newNode = new Node<DataType>(value);  
+    if (!_pHead) {
+        _pHead = newNode;  
+    } else {
+        Node<DataType>* current = _pHead;
+        while (current->_pNext) {  
+            current = current->_pNext;
+        }
+        current->_pNext = newNode;  
+    }
+    ++_iSize;  
+}
+
+
+
 template <class DataType>
 void LinkedList<DataType>::readFromFile(const string& filename) {
+
     ifstream file(filename);
     if (!file.is_open()) {
         cout << "Error opening file!" << endl;
@@ -245,7 +380,6 @@ void LinkedList<DataType>::readFromFile(const string& filename) {
     file.close();
 }
 
-//viet lai ham ghi file cho phu hop
 template <class DataType>
 void LinkedList<DataType>::writeToFile(const string& filename) {
     ofstream file(filename);
@@ -255,7 +389,7 @@ void LinkedList<DataType>::writeToFile(const string& filename) {
     }
 
     Node<DataType>* pWalker = _pHead;
-    while (pWalker != nullptr) {
+    while (pWalker != NULL) {
         file << pWalker->_data << " ";
         pWalker = pWalker->_pNext;
     }
@@ -263,7 +397,31 @@ void LinkedList<DataType>::writeToFile(const string& filename) {
     file.close();
 }
 
-//Cac lop chinh
+template <class DataType>
+Node<DataType>* LinkedList<DataType>::search(DataType data) {
+    Node<DataType>* current = _pHead;
+    while (current != NULL) {
+        if (current->_data == data) {
+            return current;
+        }
+        current = current->_pNext;
+    }
+    return NULL; 
+}
+
+template <class DataType>
+bool LinkedList<DataType>::exists(DataType data) {
+    Node<DataType>* current = _pHead;
+    while (current != NULL) {
+        if (current->_data == data) {
+            return true;
+        }
+        current = current->_pNext;
+    }
+    return false;
+}
+
+
 class  CBook {
 	public:
 		string strBookCode ;
@@ -313,6 +471,9 @@ class  CBook {
 		{
 			return (strBookCode ==s.strBookCode );
 		}
+        bool operator !=(CBook s) {
+            return !(operator ==(s));  
+        }
 };
 class CTicket{
 	public:
@@ -385,7 +546,6 @@ class CAdmin{
 			return os;
 		}
 };
-
 class CUser{
 	public:
 		string strUserCode;
@@ -407,24 +567,42 @@ class CUser{
 			return is;
 		}
 };
-vector<CAdmin> Ad;
-list<CBook > Sa;
-list<CTicket> Ph;
-list<CUser> Us;
-void saveDataBook()
-{
-	outBook.open("Book.txt",ios_base::out);
-	for (auto it=Sa.begin();it!=Sa.end();it++)
-		outBook << *it;
-	outBook.close();
+
+LinkedList<CAdmin> Ad;
+LinkedList<CBook> Sa;
+LinkedList<CTicket> Ph;
+LinkedList<CUser> Us;
+
+template <class DataType>
+void LinkedList<DataType>::saveDataBook() {
+    outBook.open("Book.txt", ios_base::out);
+    if (!outBook.is_open()) {
+        cout << "Error: Cannot open Book.txt for writing!" << endl;
+        return;
+    }
+    Node<CBook>* current = Sa.getHead();
+    while (current != NULL) {
+        outBook << current->_data; 
+        current = current->_pNext; 
+    }
+    outBook.close();
 }
-void saveDataTicket()
-{
-	outTicket.open("Ticket.txt",ios_base::out);
-	for (auto it=Ph.begin();it!=Ph.end();it++)
-		outTicket << *it;
-	outTicket.close();
+
+template <class DataType>
+void LinkedList<DataType>::saveDataTicket() {
+    outTicket.open("Ticket.txt", ios_base::out);
+    if (!outTicket.is_open()) {
+        cout << "Error: Cannot open Ticket.txt for writing!" << endl;
+        return;
+    }
+    Node<CTicket>* current = Ph.getHead();
+    while (current != NULL) {
+        outTicket << current->_data; 
+        current = current->_pNext; 
+    }
+    outTicket.close();
 }
+
 void login()
 {
 	textcolor(14);
@@ -436,381 +614,390 @@ void login()
 	setposition(96,17); cout << "*";
 	setposition(64,18);cout << "* * * * * * * * * * * * * * * * *";
 
-}	
-int iCount =1;
-void DATA()
-{
-	CAdmin A({"",""});
-	CUser U;
-	inBook.open("Book.txt",ios_base::in);
-	inAdmin.open("Admin.txt",ios_base::in);
-	CBook S;
-	inTicket.open("Ticket.txt",ios_base::in);
-	inUser.open("User.txt",ios_base::in);
-	while(!inAdmin.eof())
-	{
-		inAdmin >> A;
-		Ad.push_back(A);
-	}
-	while(!inBook.eof())
-	{
-		inBook >> S;
-		if (S.strBookCode =="")
-			continue;
-		Sa.push_back(S);
-	}
-	while(!inTicket.eof())
-	{
-		CTicket P({0,"","","","",-1});
-		inTicket >> P;
-		if (P.strReaderCode=="" && P.strBookCode =="" && P.strReturnDate=="" && P.lPaymentDate==-1)
-			continue;
-		iCount ++;
-		Ph.push_back(P);
-	}
-	while(!inUser.eof())
-	{
-		inUser >> U;
-		Us.push_back(U);
-	}
-	inAdmin.close();
-	inBook.close();
-	inTicket.close();
-	inUser.close();
 }
-string inputPassword(int x,int y)
-{
-	string tmp;
-	char a;
-	do
-	{
-		a=_getch();
-		if (tmp.size()>100 && a!=8)
-			continue;
-		if (8==a && !tmp.empty())
-		{
-			tmp.resize(tmp.size()-1);
-			setposition(x-1,y);cout << char(32);
-			x--;
-			setposition(x,y);
-			continue;
-		}
-		if ((isalpha(a) || isalnum(a) || isprint(a)) && a != ' ')
-		{
-			setposition(x,y);cout << "*";
-			tmp.push_back(a);
-			x++;
-		}
-		if (a==0x1B)
-			exit(0);
-		if ('\b'==a && !tmp.empty())
-			tmp.resize(tmp.size()-1);
-	}
-	while (13!=a);
-		return tmp;
+
+int iCount = 1;
+void DATA() {
+    CAdmin A({"", ""}); 
+    CUser U;
+    CBook S;
+    CTicket P({0, "", "", "", "", -1}); 
+
+    
+    inBook.open("Book.txt", ios_base::in);
+    inAdmin.open("Admin.txt", ios_base::in);
+    inTicket.open("Ticket.txt", ios_base::in);
+    inUser.open("User.txt", ios_base::in);
+
+    
+    if (inAdmin.is_open()) {
+        while (!inAdmin.eof()) {
+            inAdmin >> A;
+            if (A.getuser().empty() && A.getstrPassWord().empty()) 
+                continue;
+            Ad.addTail(A); 
+        }
+        inAdmin.close();
+    }
+
+    
+    if (inBook.is_open()) {
+        while (!inBook.eof()) {
+            inBook >> S;
+            if (S.strBookCode.empty()) 
+                continue;
+            Sa.addTail(S); 
+        }
+        inBook.close();
+    }
+
+    
+    if (inTicket.is_open()) {
+        while (!inTicket.eof()) {
+            inTicket >> P;
+            
+            if (P.strReaderCode.empty() && P.strBookCode.empty() && P.strReturnDate.empty() && P.lPaymentDate == -1)
+                continue;
+            iCount++;
+            Ph.addTail(P); 
+        }
+        inTicket.close();
+    }
+
+    
+    if (inUser.is_open()) {
+        while (!inUser.eof()) {
+            inUser >> U;
+            if (U.strUserCode.empty() && U.strName.empty() && U.strRegistrationDate.empty()) 
+                continue;
+            Us.addTail(U); 
+        }
+        inUser.close();
+    }
 }
-string input(int x,int y,int& iCount )
-{
-	string tmp;
-	char a;
-	do
-	{
-		a=_getch();
-		if (tmp.size()>100 && a!=8)
-			continue;
-		if (a==8 && !tmp.empty())
-		{
-			tmp.resize(tmp.size()-1);
-			setposition(x-1,y); cout << char(32);
-			x--;
-			setposition(x,y);
-			continue;
-		}
-		if ((isalpha(a) || isalnum(a) || isprint(a)) && a != ' ')
-		{
-			setposition(x,y);cout << a;
-			tmp.push_back(a);
-			x++;
-		}
-		if (a==0x1B)
-			exit(0);
-	}
-	while (13!=a);
-		return tmp;
+
+template <class DataType>
+string LinkedList<DataType>::inputPassword(int x, int y) {
+    LinkedList<char> password; 
+    char a;
+    do {
+        a = _getch(); 
+
+        
+        if (a == 8 && !password.isEmpty()) {
+            password.removeTail(); 
+            setposition(--x, y);
+            cout << " ";  
+            setposition(x, y);
+            continue;
+        }
+
+        
+        if ((isalpha(a) || isalnum(a) || isprint(a)) && a != ' ') {
+            setposition(x++, y);
+            cout << "*";           
+            password.addTail(a);   
+        }
+
+        
+        if (a == 0x1B)
+            exit(0);
+
+    } while (a != 13); 
+
+    
+    string result;
+    Node<char>* current = password.getHead();
+    while (current != NULL) {
+        result.push_back(current->_data); 
+        current = current->_pNext;
+    }
+    return result;
 }
-string inputStringAuthor(int x,int y,int& iCount )
-{
-	string tmp="";
-	char a;
-	char b;
-	int iNumber=0;
-	do
-	{
-		a=_getch();
-		if (a==8 && !tmp.empty())
-		{
-			b=tmp[tmp.size()-1];
-			if (((b>=65 && b<=90) || (b>=97 && b<=122) || b==' '))
-				goto hoi;
-			else
-				iNumber--;
-			hoi:
-			tmp.resize(tmp.size()-1);
-			setposition(x-1,y); cout << char(32);
-			x--;
-			setposition(x,y);
-			continue;
-		}
-		if ((a>=65 && a<=90) || (a>=97 && a<=122) || a==' ')
-		{
-			tmp.push_back(a);
-			setposition(x,y); cout << a;
-			x++;
-			continue;
-		}
-		else
-		{
-			if (a!=13)
-			{
-				if (a==8)
-					continue;
-				iNumber++;
-				tmp.push_back(a);
-				setposition(x,y); cout << a;
-				x++;
-			}
-		}
-	}
-	while (13!=a);
-	{
-		iCount +=iNumber;
-		if (iNumber==0)
-			return tmp;
-		return "";
-	}
+
+template <class DataType>
+string LinkedList<DataType>::inputStringAuthor(int x, int y, int& iCount) {
+    LinkedList<char> inputList; 
+    char a, b;
+    int iNumber = 0; 
+
+    do {
+        a = _getch(); 
+
+        
+        if (a == 8 && !inputList.isEmpty()) {
+            b = inputList.getTail()->_data; 
+            if (((b >= 65 && b <= 90) || (b >= 97 && b <= 122) || b == ' ')) {
+                goto hoi;
+            } else {
+                iNumber--;
+            }
+
+        hoi:
+            inputList.removeTail(); 
+            setposition(--x, y);    
+            cout << " ";            
+            setposition(x, y);      
+            continue;
+        }
+
+        
+        if ((a >= 65 && a <= 90) || (a >= 97 && a <= 122) || a == ' ') {
+            inputList.addTail(a);   
+            setposition(x++, y);    
+            cout << a;              
+            continue;
+        }
+
+        
+        else {
+            if (a != 13) {          
+                if (a == 8)         
+                    continue;
+
+                iNumber++;          
+                inputList.addTail(a); 
+                setposition(x++, y);  
+                cout << a;            
+            }
+        }
+
+    } while (13 != a); 
+
+    
+    string result;
+    Node<char>* current = inputList.getHead();
+    while (current != NULL) {
+        result.push_back(current->_data); 
+        current = current->_pNext;
+    }
+
+    
+    iCount += iNumber; 
+    if (iNumber == 0)  
+        return result;
+
+    return ""; 
 }
-string inputStringBookTitle(int x,int y,int& iCount )
-{
-	string tmp="";
-	char a;
-	char b;
-	int iNumber =0;
-	do
-	{
-		a=_getch();
-		if (tmp.size()>100 && a!=8)
-			continue;	
-		if (a==8 && !tmp.empty())
-		{
-			b=tmp[tmp.size()-1];
-			if (((b>=65 && b<=90) || (b>=97 && b<=122) || (b>='0' && b<='9') || b==' ' || b=='&' || b=='-'))
-				goto hoi;
-			else
-				iNumber --;
-			hoi:
-			tmp.resize(tmp.size()-1);
-			setposition(x-1,y); cout << char(32);
-			x--;
-			setposition(x,y);
-			continue;
-		}
-		if ((a>=65 && a<=90) || (a>=97 && a<=122) || (a>='0' && a<='9') || a==' ' || a=='&' || a=='-')
-		{
-			tmp.push_back(a);
-			setposition(x,y); cout << a;
-			x++;
-			continue;
-		}
-		else
-		{
-			if (a!=13)
-			{
-				if (a==8)
-					continue;
-				iNumber++;
-				tmp.push_back(a);
-				setposition(x,y); cout << a;
-				x++;
-			}
-		}
-	}
-	while (13!=a);
-	{
-		iCount += iNumber;
-		if (iNumber==0)
-			return tmp;
-		return "";
-	}
+
+template <class DataType>
+string LinkedList<DataType>::inputStringBookTitle(int x, int y, int& iCount) {
+    LinkedList<char> inputList; 
+    char a, b;
+    int iNumber = 0; 
+
+    do {
+        a = _getch(); 
+
+        
+        if (inputList.getSize() > 100 && a != 8) 
+            continue;
+
+        
+        if (a == 8 && !inputList.isEmpty()) {
+            b = inputList.getTail()->_data; 
+            if (((b >= 65 && b <= 90) || (b >= 97 && b <= 122) || (b >= '0' && b <= '9') || b == ' ' || b == '&' || b == '-'))
+                goto hoi;
+            else
+                iNumber--;
+
+            hoi:
+            inputList.removeTail(); 
+            setposition(--x, y);    
+            cout << " ";            
+            setposition(x, y);      
+            continue;
+        }
+
+        
+        if ((a >= 65 && a <= 90) || (a >= 97 && a <= 122) || (a >= '0' && a <= '9') || a == ' ' || a == '&' || a == '-') {
+            inputList.addTail(a);   
+            setposition(x++, y);    
+            cout << a;              
+            continue;
+        }
+
+        
+        else {
+            if (a != 13) {          
+                if (a == 8)         
+                    continue;
+
+                iNumber++;          
+                inputList.addTail(a); 
+                setposition(x++, y);  
+                cout << a;            
+            }
+        }
+
+    } while (13 != a); 
+
+    
+    string result;
+    Node<char>* current = inputList.getHead();
+    while (current != NULL) {
+        result.push_back(current->_data); 
+        current = current->_pNext;
+    }
+
+    
+    iCount += iNumber; 
+    if (iNumber == 0)  
+        return result;
+
+    return ""; 
 }
-string inputStringBookCode(int x,int y,int& iCount )
-{
-	string tmp="";
-	char a;
-	char b;
-	int iNumber=0;
-	do
-	{
-		a=_getch();
-		if (tmp.size()>100 && a!=8)
-			continue;
-		if (a==8 && !tmp.empty())
-		{
-			b=tmp[tmp.size()-1];
-			if ((b>=65 && b<=90) || (b>=97 && b<=122) || (b>='0' && b<='9'))
-				goto hoi;
-			iNumber--;
-			hoi:
-			tmp.resize(tmp.size()-1);
-			setposition(x-1,y); cout << char(32);
-			x--;
-			setposition(x,y);
-			continue;
-		}
-		if (a==' ')
-		{
-			iNumber++;
-			setposition(x,y); cout << a;
-			tmp.push_back(a);
-			x++;
-			continue;
-		}
-		if ((a>=65 && a<=90) || (a>=97 && a<=122) || (a>='0' && a<='9'))
-		{
-			tmp.push_back(a);
-			setposition(x,y); cout << a;
-			x++;
-			continue;
-		}
-		if (a!=13)
-		{
-			if (a==8)
-				continue;
-			iNumber++;
-			setposition(x,y); cout << a;
-			tmp.push_back(a);
-			x++;
-		}
-	}
-	while (13!=a);
-	{
-		iCount +=iNumber;
-		if (iNumber==0)
-			return tmp;
-		return "";
-	}
+
+template <class DataType>
+string LinkedList<DataType>::inputStringBookCode(int x, int y, int& iCount) {
+    LinkedList<char> inputChars;  
+    string result = "";
+    char a;
+    int iNumber = 0;
+
+    do {
+        a = _getch();  
+
+        
+        if (inputChars.getSize() > 100 && a != 8) {
+            continue;
+        }
+
+        if (a == 8 && !inputChars.isEmpty()) {  
+            inputChars.removeLastChar();  
+            iNumber--;
+            setposition(x - 1, y);
+            cout << " ";  
+            x--;
+            setposition(x, y);
+            continue;
+        }
+
+        if (a == ' ') {  
+            iNumber++;
+            setposition(x, y);
+            cout << a;
+            inputChars.addChar(a);  
+            x++;
+            continue;
+        }
+
+        if ((a >= 65 && a <= 90) || (a >= 97 && a <= 122) || (a >= '0' && a <= '9')) {  
+            inputChars.addChar(a);
+            setposition(x, y);
+            cout << a;
+            x++;
+            continue;
+        }
+
+        if (a != 13) {  
+            if (a == 8) continue;
+            iNumber++;
+            setposition(x, y);
+            cout << a;
+            inputChars.addChar(a);
+            x++;
+        }
+
+    } while (a != 13);  
+
+    
+    Node<char>* current = inputChars.getHead();
+    while (current != NULL) {
+        result.push_back(current->_data);
+        current = current->_pNext;
+    }
+
+    iCount += iNumber;
+    if (iNumber == 0)
+        return result;  
+    return result;
 }
-template <class T>
-T changeNumber(string tmp)
+
+
+template <class DataType>
+DataType changeNumber(string tmp)
 {
 	stringstream ss(tmp);
-	T k;
+	DataType k;
 	ss >> k;
 	return k;
 }
-float inputRealNumber(int x,int y,int& iCount )
-{
-	string tmp="";
-	char a;
-	char b;
-	int iNumber=0;
-	do
-	{
-		a=_getch();
-		if (tmp.size()>100 && a!=8)
-			continue;
-		if (a==8 && !tmp.empty())
-		{
-			b=tmp[tmp.size()-1];
-			if ((b>=48 && b<=57) || b == '.')
-				goto hoi;
-			else
-				iNumber--;
-			hoi:
-			tmp.resize(tmp.size()-1);
-			setposition(x-1,y); cout << char(32);
-			x--;
-			setposition(x,y);
-			continue;
-		}
-		if ((a>=48 && a<=57) || a == '.')
-		{
-			setposition(x,y); cout << a;
-			tmp.push_back(a);
-			x++;
-			continue;
-		}
-		if (a!=13)
-		{
-			if (a==8)
-				continue;
-			setposition(x,y); cout << a;
-			tmp.push_back(a);
-			x++;
-			iNumber++;
-		}
-	}
-	while (13!=a);
-	{
-		iCount +=iNumber;
-		if (iNumber==0 && tmp.size()<=10)
-			return changeNumber<float>(tmp);
-		else
-			return -1;
-	}
-}
-long inputInteger(int x,int y,int& iCount )
-{
-	string tmp="";
-	char a,b;
-	int iNumber=0;
-	do
-	{
-		a=_getch();
-		if (tmp.size()>100 && a!=8)
-			continue;
-		if (a==8 && !tmp.empty())
-		{
-			b=tmp[tmp.size()-1];
-			if ((b>=48 && b<=57))
-				goto hoi;
-			else
-				iNumber--;
-			hoi:
-			tmp.resize(tmp.size()-1);
-			setposition(x-1,y); cout << char(32);
-			x--;
-			setposition(x,y);
-			continue;
-		}
-		if ((a>=48 && a<=57))
-		{
-			setposition(x,y); cout << a;
-			tmp.push_back(a);
-			x++;
-			continue;
-		}
-		if (a!=13)
-		{
-			if (a==8)
-				continue;
-			setposition(x,y); cout << a;
-			tmp.push_back(a);
-			x++;
-			iNumber++;
-		}
-		
-	}
-	while (13!=a);
-	{
-		iCount +=iNumber;
-		if (iNumber==0 && tmp.size()<=10)
-			return changeNumber<long>(tmp);
-		else
-			return -1;
-	}
+
+template <class DataType>
+long LinkedList<DataType>::inputInteger(int x, int y, int& iCount) {
+    LinkedList<char> inputList; 
+    char a, b;
+    int iNumber = 0; 
+
+    do {
+        a = _getch(); 
+
+        
+        if (inputList.getSize() > 100 && a != 8) 
+            continue;
+
+        
+        if (a == 8 && !inputList.isEmpty()) {
+            b = inputList.getTail()->_data; 
+            if (b >= '0' && b <= '9')   
+                goto hoi;
+            else
+                iNumber--;   
+
+            hoi:
+            inputList.removeTail(); 
+            setposition(--x, y);    
+            cout << " ";            
+            setposition(x, y);      
+            continue;
+        }
+
+        
+        if (a >= '0' && a <= '9') {
+            inputList.addTail(a);   
+            setposition(x++, y);    
+            cout << a;              
+            continue;
+        }
+
+        
+        else {
+            if (a != 13) {          
+                if (a == 8)         
+                    continue;
+
+                setposition(x++, y);  
+                cout << a;            
+                inputList.addTail(a); 
+                iNumber++;           
+            }
+        }
+
+    } while (13 != a); 
+
+    
+    string result;
+    Node<char>* current = inputList.getHead();
+    while (current != NULL) {
+        result.push_back(current->_data); 
+        current = current->_pNext;
+    }
+
+    
+    long number = changeNumber<long>(result);
+
+    
+    iCount += iNumber; 
+    if (iNumber == 0 && result.size() <= 10) 
+        return number;
+
+    return -1; 
 }
 
-void menuFunction(int n,int k)
+
+template <class DataType>
+void LinkedList<DataType>::menuFunction(int n,int k)
 {
 	textcolor(14);
 	setposition(102,k); cout << "<-";
@@ -819,9 +1006,9 @@ void menuFunction(int n,int k)
 	while (true)
 	{
 		textcolor(11);
-		//setposition(105,k); cout << "[BACK]";
+		
 		gotocolor(105,k,"[BACK]",11);
-		//setposition(105,n); cout << "[EXIT]";
+		
 		gotocolor(105,n,"[EXIT]",11);
 		textcolor(14);
 		system("pause>nul");
@@ -860,13 +1047,23 @@ void menuFunction(int n,int k)
 		}
 	}
 }
-bool checkuser(string a,string b)
-{
-	for (int i=0;i<Ad.size();i++)
-		if (a==Ad[i].getuser() && b==Ad[i].getstrPassWord())
-			return true;
-	return false;
+
+template <class DataType>
+bool LinkedList<DataType>::checkUser(string a, string b) {
+    Node<CAdmin>* current = Ad.getHead(); 
+    
+    
+    while (current != NULL) {
+        
+        if (a == current->_data.getuser() && b == current->_data.getstrPassWord()) {
+            return true;
+        }
+        current = current->_pNext; 
+    }
+
+    return false; 
 }
+
 void run()
 {
 	int iNumber=3;
@@ -892,10 +1089,11 @@ void run()
 		setposition(66,23); cout << "Password:";
 		setposition(72,21); 
 		textcolor(15);
-		U_ser=input(72,21,iCount );
+        LinkedList<char> inputList;
+		U_ser = inputList.input(72,21,iCount,inputList);
 		setposition(76,23);
-		P_ass=inputPassword(76,23);
-		if (checkuser(U_ser,P_ass))
+		P_ass = inputList.inputPassword(76,23);
+		if (Ad.checkUser(U_ser,P_ass))
 			return;
 		iRun ++;
 		iNumber--;
@@ -903,7 +1101,77 @@ void run()
 	}
 	exit(0);
 }
-void publishingBook(CBook  tmp,int n)
+
+template <class DataType>
+string LinkedList<DataType>::toString() {
+        string result = "";
+        Node<DataType>* current = _pHead;
+        while (current != NULL) {
+            result += current->_data;
+            current = current->_pNext;
+        }
+        return result;
+    }
+
+template <class DataType>
+float LinkedList<DataType>::inputRealNumber(int x, int y, int& iCount) {
+    LinkedList<char> inputList; 
+    char a;
+    char b;
+    int iNumber = 0;
+    bool dotEntered = false; 
+    
+    do {
+        a = _getch(); 
+
+        if (inputList.toString().size() > 100 && a != 8) 
+            continue;
+        
+        if (a == 8 && !inputList.toString().empty()) { 
+            b = inputList.toString().back();  
+            if ((b >= 48 && b <= 57) || b == '.') {
+                inputList.append(0);  
+                setposition(x - 1, y); cout << char(32);
+                x--;
+                setposition(x, y);
+                continue;
+            } else {
+                iNumber--;
+            }
+        }
+
+        if ((a >= 48 && a <= 57) || a == '.') { 
+            if (a == '.' && dotEntered) 
+                continue;
+            if (a == '.') dotEntered = true;
+            inputList.append(a); 
+            setposition(x, y); cout << a;
+            x++;
+            continue;
+        }
+
+        if (a != 13) { 
+            if (a == 8)
+                continue;
+            inputList.append(a); 
+            setposition(x, y); cout << a;
+            x++;
+            iNumber++;
+        }
+    } while (13 != a); 
+    
+    iCount += iNumber;
+
+    
+    string inputString = inputList.toString();
+    if (iNumber == 0 && inputString.size() <= 10) {
+        return changeNumber<float>(inputString); 
+    } else {
+        return -1; 
+    }
+}
+
+void printBook(CBook tmp,int n)
 {
 	textcolor(15);
 	setposition(5,n); cout << tmp.strBookCode ;
@@ -916,211 +1184,278 @@ void publishingBook(CBook  tmp,int n)
 	setposition(120,n); cout << tmp.strDate;
 	setposition(137,n); cout << tmp.lBookStatus;
 	textcolor(7);
-} // nhứt lâm
-void informationBook(int& n)
-{
-	textcolor(7);
-	gotocolor(5,n,"MA SACH",14);
-	gotocolor(16,n,"TEN SACH",14);
-	gotocolor(42,n,"TAC GIA",14);
-	gotocolor(60,n,"NHA XUAT BAN",14);
-	gotocolor(76,n,"GIA BAN",14);
-	gotocolor(89,n,"NAM PHAT HANH",14);
-	gotocolor(106,n,"SO TRANG",14);
-	gotocolor(120,n,"NGAY NHAP KHO",14);
-	gotocolor(137,n,"TINH TRANG SACH",14);
-	textcolor(3);
-	int iNumber = n;
-	for (int i=0;i<=Sa.size()+1;i++)
-	{
-		if (i==1)
-		{
-			iNumber++;
-			continue;
-		}
-		write(4,iNumber ,"|");
-		write(15,iNumber ,"|");
-		write(41,iNumber ,"|");
-		write(59,iNumber ,"|");
-		write(75,iNumber ,"|");
-		write(88,iNumber ,"|");
-		write(105,iNumber ,"|");
-		write(119,iNumber ,"|");
-		write(136,iNumber ,"|");
-		write(155,iNumber ,"|");
-		iNumber ++;
-	}
-	int iRun = n-2;
-	for (int i=1;i<=3;i++)
-	{
-		if (i==3)
-		{
-			if (!Sa.empty())
-				for (int j=4;j<=154;j+=2)
-					write(j,iRun + Sa.size()+1,"--");
-			break;
-		}	
-		iRun +=i;
-		for (int j=4;j<=154;j+=2)
-			write(j,iRun ,"--");
-	}
-	n+=2;
-	for (list<CBook >::iterator it=Sa.begin();it!=Sa.end();it++)
-		publishingBook(*it,n++);
-	n+=3;
 }
-void  publishingUser(int n,CUser us)
+
+template <class DataType>
+void LinkedList<DataType>::informationBook(int& n)
 {
-	textcolor(15);
-	setposition(5,n); cout << us.strUserCode;
-	setposition(52,n); cout << us.strName;
-	setposition(100,n); cout << us.strRegistrationDate;
-	textcolor(7);
+    textcolor(7);
+    gotocolor(5, n, "MA SACH", 14);
+    gotocolor(16, n, "TEN SACH", 14);
+    gotocolor(42, n, "TAC GIA", 14);
+    gotocolor(60, n, "NHA XUAT BAN", 14);
+    gotocolor(76, n, "GIA BAN", 14);
+    gotocolor(89, n, "NAM PHAT HANH", 14);
+    gotocolor(106, n, "SO TRANG", 14);
+    gotocolor(120, n, "NGAY NHAP KHO", 14);
+    gotocolor(137, n, "TINH TRANG SACH", 14);
+    textcolor(3);
+    int iNumber = n;
+
+    
+    for (int i = 0; i <= Sa.getSize() + 1; i++) {
+        if (i == 1) {
+            iNumber++;
+            continue;
+        }
+        write(4, iNumber, "|");
+        write(15, iNumber, "|");
+        write(41, iNumber, "|");
+        write(59, iNumber, "|");
+        write(75, iNumber, "|");
+        write(88, iNumber, "|");
+        write(105, iNumber, "|");
+        write(119, iNumber, "|");
+        write(136, iNumber, "|");
+        write(155, iNumber, "|");
+        iNumber++;
+    }
+
+    int iRun = n - 2;
+    
+    for (int i = 1; i <= 3; i++) {
+        if (i == 3) {
+            if (!Sa.isEmpty()) {
+                for (int j = 4; j <= 154; j += 2) {
+                    write(j, iRun + Sa.getSize() + 1, "--");
+                }
+            }
+            break;
+        }
+        iRun += i;
+        for (int j = 4; j <= 154; j += 2) {
+            write(j, iRun, "--");
+        }
+    }
+
+    n += 2;
+
+    
+    Node<CBook>* current = Sa.getHead();
+    while (current != NULL) {
+        printBook(current->_data, n++);
+        current = current->_pNext;
+    }
+
+    n += 3;
 }
-void  informationUser (int& n)
+
+void printUser(int n, CUser us)
 {
-	textcolor(15);
+    textcolor(15);
+    setposition(5, n); cout << us.strUserCode;
+    setposition(52, n); cout << us.strName;
+    setposition(100, n); cout << us.strRegistrationDate;
+    textcolor(7);
+}
+
+template <class DataType>
+void LinkedList<DataType>::informationUser(int& n) {
+    textcolor(15);
 	gotocolor(5,n,"MA USER",14);
 	gotocolor(52,n,"HO TEN",14);
 	gotocolor(100,n,"NGAY DANG KY",14);
 	textcolor(3);
-	int  iNumber =n;
-	for (int i=0;i<=Us.size()+1;i++)
-	{
-		if (i==1)
-		{
-			 iNumber ++;
-			continue;
-		}
-		write(4, iNumber ,"|");
-		write(51, iNumber ,"|");
-		write(99, iNumber ,"|");
-		write(155, iNumber ,"|");
-		 iNumber ++;
-	}
-	int iRun =n-2;
-	for (int i=1;i<=3;i++)
-	{
-		if (i==3)
-		{
-			if (!Us.empty())
-				for (int j=4;j<=154;j+=2)
-					write(j,iRun +Us.size()+1,"--");
-			break;
-		}	
-		iRun +=i;
-		for (int j=4;j<=154;j+=2)
-			write(j,iRun ,"--");
-	}
-	n+=2;
-	for (list<CUser>::iterator it=Us.begin();it!=Us.end();it++)
-		 publishingUser(n++,*it);
-	n+=3;
+
+    
+    int iNumber = n;
+    for (int i = 0; i <= Us.getSize() + 1; i++) {
+        if (i == 1) {
+            iNumber++;
+            continue;
+        }
+        write(4, iNumber, "|");
+        write(51, iNumber, "|");
+        write(99, iNumber, "|");
+        write(155, iNumber, "|");
+        iNumber++;
+    }
+
+    int iRun = n - 2;
+    for (int i = 1; i <= 3; i++) {
+        if (i == 3) {
+            if (!Us.isEmpty()) {
+                for (int j = 4; j <= 154; j += 2)
+                    write(j, iRun + Us.getSize() + 1, "--");
+            }
+            break;
+        }
+        iRun += i;
+        for (int j = 4; j <= 154; j += 2)
+            write(j, iRun, "--");
+    }
+
+    n += 2;
+
+    
+    Node<CUser>* pWalker = Us.getHead();
+    while (pWalker != NULL) {
+        printUser(n++, pWalker->_data);
+        pWalker = pWalker->_pNext; 
+    }
+
+    n += 3;
 }
-void display()
+
+template <class DataType>
+void LinkedList<DataType>::display()
 {
-	int n=10;
+	int n = 10;
 	system("cls");
 	informationBook(n);
 	menuFunction(n, n-1);
 }
-bool  checkBook(CBook  tmp)
+
+bool checkBook(CBook tmp)
 {
-	for (list<CBook >::iterator i=Sa.begin();i!=Sa.end();i++)
-		if (*i==tmp)
-			return true;
-	return false;
+    Node<CBook>* current = Sa.getHead();  
+    while (current != NULL) {
+        if (current->_data == tmp) {
+            return true;  
+        }
+        current = current->_pNext;  
+    }
+    return false;  
 }
-bool  bookEntryError(CBook  tmp)
+
+template <class DataType>
+bool bookEntryError(CBook tmp)
 {
 	if (tmp.fPrice==-1 || tmp.lYear==-1 || tmp.lpage==-1)
 		return true;
 	return false;
 }
-string setstring(int x,int y,int& iCount )
-{
-	string strRun=input(x,y,iCount );
-	return strRun;
+
+template <class DataType>
+string LinkedList<DataType>::setstring(int x, int y, int& iCount) {
+    
+    LinkedList<char> inputList;
+    
+    
+    string strRun = input(x, y, iCount);
+    
+    
+    string result;
+    Node<char>* current = inputList.getHead();
+    
+    
+    while (current != NULL) {
+        result.push_back(current->_data);
+        current = current->_pNext;
+    }
+
+    return result;
 }
-void moreBook()
+
+template <class DataType>
+void LinkedList<DataType>::addBook() 
 {
-	system("cls");
-	CBook  tmp({"","","","",-1,-1,-1});
-	textcolor(15);
-	setposition(5,7); cout << "MA SACH:";
-	setposition(5,8); cout << "TEN SACH:";
-	setposition(5,9); cout << "TAC GIA:";
-	setposition(5,10); cout << "NHA XUAT BAN:";
-	setposition(5,11); cout << "GIA BAN:";
-	setposition(5,12); cout << "NAM PHAT HANH:";
-	setposition(5,13); cout << "SO TRANG:";
-	int n=17;
-	textcolor(11);
-	setposition(70,n-2); cout << "THONG TIN SACH";
-	informationBook(n);
-	textcolor(6);
-	int iCount =0;
-	setposition(14,7);tmp.strBookCode =inputStringBookCode(14,7,iCount );
-	setposition(15,8);tmp.strBookTitle=inputStringBookTitle(15,8,iCount );
-	setposition(14,9);tmp.strAuthor=inputStringAuthor(14,9,iCount );
-	setposition(19,10);tmp.strPublisher=inputStringAuthor(19,10,iCount );
-	setposition(14,11);tmp.fPrice=inputRealNumber(14,11,iCount );
-	setposition(20,12);tmp.lYear=inputInteger(20,12,iCount );
-	setposition(15,13);tmp.lpage=inputInteger(15,13,iCount );
-	tmp.lBookStatus=0;
-	time_t now = time(0);
-	tm *ltm=localtime(&now);
-	int day=ltm->tm_mday;
-	int month=ltm->tm_mon;
-	month++;
-	int lYear=ltm->tm_year;
-	lYear+=1900;
-	tmp.strDate=to_string(day)+"/"+to_string(month)+"/"+to_string(lYear);
-	textcolor(14);
-	if (iCount !=0)
-	{
-		setposition(100,5);
-		cout << "LOI NHAP SAI HE THONG!";
-		goto hoi;
-	}
-	if ( checkBook(tmp))
-	{
-		setposition(100,5);
-		cout << "SACH DA TON TAI!";
-	}
-	else
-	{
-		setposition(100,5);
-		cout << "THEM SACH THANH CONG!";
-		Sa.push_back(tmp);
-		saveDataBook();
-	}
-	hoi:
-	menuFunction(n,n-1);
+    system("cls");
+    CBook tmp({"","","","",-1,-1,-1});
+    textcolor(15);
+    
+    setposition(5,7); cout << "MA SACH:";
+    setposition(5,8); cout << "TEN SACH:";
+    setposition(5,9); cout << "TAC GIA:";
+    setposition(5,10); cout << "NHA XUAT BAN:";
+    setposition(5,11); cout << "GIA BAN:";
+    setposition(5,12); cout << "NAM PHAT HANH:";
+    setposition(5,13); cout << "SO TRANG:";
+    
+    int n = 17;
+    textcolor(11);
+    setposition(70, n - 2); cout << "THONG TIN SACH";
+    informationBook(n);
+    textcolor(6);
+    
+    int iCount = 0;
+    setposition(14,7); tmp.strBookCode = inputStringBookCode(14,7,iCount);
+    setposition(15,8); tmp.strBookTitle = inputStringBookTitle(15,8,iCount);
+    setposition(14,9); tmp.strAuthor = inputStringAuthor(14,9,iCount);
+    setposition(19,10); tmp.strPublisher = inputStringAuthor(19,10,iCount);
+    setposition(14,11); tmp.fPrice = inputRealNumber(14,11,iCount);
+    setposition(20,12); tmp.lYear = inputInteger(20,12,iCount);
+    setposition(15,13); tmp.lpage = inputInteger(15,13,iCount);
+    
+    tmp.lBookStatus = 0;
+    time_t now = time(0);
+    tm *ltm = localtime(&now);
+    int day = ltm->tm_mday;
+    int month = ltm->tm_mon + 1; 
+    int year = ltm->tm_year + 1900; 
+    tmp.strDate = to_string(day) + "/" + to_string(month) + "/" + to_string(year);
+    
+    textcolor(14);
+    if (iCount != 0)
+    {
+        setposition(100,5);
+        cout << "LOI NHAP SAI HE THONG!";
+        goto hoi;
+    }
+
+    if (checkBook(tmp))
+    {
+        setposition(100,5);
+        cout << "SACH DA TON TAI!";
+    }
+    else
+    {
+        setposition(100,5);
+        cout << "THEM SACH THANH CONG!";
+        
+        
+        Sa.addTail(tmp);  
+        
+        saveDataBook();
+    }
+    hoi:
+    menuFunction(n, n-1);
 }
-void checkBookCode(string s)
+
+
+template <class DataType>
+void LinkedList<DataType>::checkBookCode(string s) 
 {
-	CBook  k;
-	textcolor(14);
-	for (auto i=Sa.begin();i!=Sa.end();i++)
-	{
-		k=*i;
-		if (k.strBookCode ==s)
-		{
-			if (k.lBookStatus==0)
-			{
-				Sa.erase(i);
-				setposition(100,5); cout << "XOA SACH THANH CONG";
-				saveDataBook();
-				return;
-			}
-			setposition(100,5); cout << "SACH DANG DUOC MUON";
-			return;	
-		}
-	}	
-	setposition(100,5); cout << "SACH KHONG TON TAI";
+    CBook k;
+    textcolor(14);
+
+    
+    Node<CBook>* current = Sa.getHead();  
+
+    while (current != NULL) {  
+        k = current->_data;  
+
+        if (k.strBookCode == s) {  
+            if (k.lBookStatus == 0) {  
+                Sa.remove(k);  
+                setposition(100, 5);
+                cout << "XOA SACH THANH CONG";
+                saveDataBook();
+                return;
+            }
+            setposition(100, 5);
+            cout << "SACH DANG DUOC MUON";
+            return;
+        }
+        current = current->_pNext;  
+    }
+
+    setposition(100, 5);
+    cout << "SACH KHONG TON TAI";  
 }
-void deleteBook()
+
+template <class DataType>
+void LinkedList<DataType>::deleteBook()
 {
 	system("cls");
 	string s;
@@ -1143,7 +1478,10 @@ void deleteBook()
 	hoi:
 	menuFunction(n,n-1);
 }
-void bookManagement()
+
+
+template <class DataType>
+void LinkedList<DataType>::bookManagement()
 {
 	while(true)
 	{
@@ -1193,12 +1531,12 @@ void bookManagement()
 				textcolor(7);
 				if (null==0)
 				{
-					 display();
+					display();
 					break;
 				}
 				if (null==1)
 				{
-					moreBook();
+					addBook();
 					break;
 				}
 				if (null==2)
@@ -1213,7 +1551,8 @@ void bookManagement()
 	}
 }
 
-void publishingTicket(CTicket ph,int n)
+
+void printTicket(CTicket ph,int n)
 {
 	setposition(5,n); cout << ph.lNumberTicket;
 	setposition(29,n); cout << ph.strReaderCode;
@@ -1222,305 +1561,391 @@ void publishingTicket(CTicket ph,int n)
 	setposition(94,n); cout << ph.strReturnDate;
 	setposition(120,n); cout << ph.lPaymentDate;
 }
-void informationTicket(int& n)
+
+template <class DataType>
+void LinkedList<DataType>::informationTicket(int& n) 
 {
-	textcolor(14);
-	setposition(5,n); cout << "SO PHIEU MUON";
-	setposition(29,n); cout << "MA BAN DOC";
-	setposition(52,n); cout << "MA SACH";
-	setposition(71,n); cout << "NGAY MUON";
-	setposition(94,n); cout << "NGAY PHAI TRA";
-	setposition(120,n); cout << "TINH TRANG PHIEU MUON";
-	textcolor(9);
-	int iNumber =n;
-	for (int i=0;i<=Ph.size()+1;i++)
-	{
-		if (i==1)
-		{
-			iNumber ++;
-			continue;
-		}
-		write(4,iNumber ,"|");
-		write(28,iNumber ,"|");
-		write(51,iNumber ,"|");
-		write(70,iNumber ,"|");
-		write(93,iNumber ,"|");
-		write(119,iNumber ,"|");
-		write(155,iNumber ,"|");
-		iNumber ++;
-	}
-	int iRun=n-2;
-	for (int i=1;i<=3;i++)
-	{
-		if (i==3)
-		{
-			if (!Ph.empty())
-				for (int j=4;j<=154;j+=2)
-					write(j,iRun+Ph.size()+1,"--");
-			break;
-		}
-		iRun+=i;
-			
-		for (int j=4;j<=154;j+=2)
-			write(j,iRun,"--");
-	}
-	n+=2;
-	textcolor(15);
-	for (list<CTicket>::iterator i=Ph.begin();i!=Ph.end();i++)
-		publishingTicket(*i,n++);
-	n+=3;
+    textcolor(14);
+    setposition(5, n); cout << "SO PHIEU MUON";
+    setposition(29, n); cout << "MA BAN DOC";
+    setposition(52, n); cout << "MA SACH";
+    setposition(71, n); cout << "NGAY MUON";
+    setposition(94, n); cout << "NGAY PHAI TRA";
+    setposition(120, n); cout << "TINH TRANG PHIEU MUON";
+    textcolor(9);
+
+    int iNumber = n;
+    for (int i = 0; i <= Ph.getSize() + 1; i++)
+    {
+        if (i == 1)
+        {
+            iNumber++;
+            continue;
+        }
+        write(4, iNumber, "|");
+        write(28, iNumber, "|");
+        write(51, iNumber, "|");
+        write(70, iNumber, "|");
+        write(93, iNumber, "|");
+        write(119, iNumber, "|");
+        write(155, iNumber, "|");
+        iNumber++;
+    }
+
+    int iRun = n - 2;
+    for (int i = 1; i <= 3; i++)
+    {
+        if (i == 3)
+        {
+            if (!Ph.isEmpty())
+                for (int j = 4; j <= 154; j += 2)
+                    write(j, iRun + Ph.getSize() + 1, "--");
+            break;
+        }
+        iRun += i;
+
+        for (int j = 4; j <= 154; j += 2)
+            write(j, iRun, "--");
+    }
+    n += 2;
+
+    textcolor(15);
+    
+    
+    Node<CTicket>* current = Ph.getHead();
+    while (current != NULL)
+    {
+        printTicket(current->_data, n++);
+        current = current->_pNext;
+    }
+    n += 3;
 }
-void information ()
+
+template <class DataType>
+void LinkedList<DataType>::information ()
 {
 	system("cls");
 	int n=10;
 	informationTicket(n);
 	menuFunction(n,n-1);
 }
-int iNumber =0;
-void checkbook(CBook  pp,string a)
+
+int iNumber = 0;
+void checkbook(CBook pp,string a)
 {
-	if (pp.strBookCode ==a)
+	if (pp.strBookCode == a)
 	{
 		if (pp.lBookStatus==0)
 			iNumber =1;
 		iNumber ++;
 	}	
 }
+
 bool checkReader(CUser us,string a)
 {
-	if (us.strUserCode==a)
+	if (us.strUserCode == a)
 		return true;
 	return false;
 }
-void trace(CBook & sa,string a)
-{
-	CTicket tmp;
-	for (list<CUser>::iterator i=Us.begin();i!=Us.end();i++)
-	{
-		if (checkReader(*i,a))
-		{
-			iNumber ++;
-			sa.lBookStatus=iCount ;
-			tmp.lNumberTicket=iCount ;
-			tmp.strReaderCode=a;
-			tmp.strBookCode =sa.strBookCode ;
-			time_t now = time(0);
-			tm *ltm=localtime(&now);
-			int day=ltm->tm_mday;
-			int month=ltm->tm_mon;
-			month++;
-			int lYear=ltm->tm_year;
-			lYear+=1900;
-			tmp.strLoanDate=to_string(day)+"/"+to_string(month)+"/"+to_string(lYear);
-			if (month==2)
-			{
-				if (lYear%4==0 && lYear%400==0)
-				{
-					day+=7;
-					if (day>29)
-					{
-						day-=29;
-						month++;
-					}
-				}
-				else
-				{
-					day+=7;
-					if (day>28)
-					{
-						day-=28;
-						month++;
-					}
-				}
-			}
-			else
-			{
-				if (month==1 || month==3 || month==5 || month==7 || month==8 || month==10 || month==12)
-				{
-					day+=7;
-					if (day>31)
-					{
-						day-=31;
-						month++;
-						if (month>12)
-						{
-							lYear++;
-							month-=12;
-						}
-						else
-							month++;
-					}
-				}
-				else
-				{
-					day+=7;
-					if (day>30)
-					{
-						day-=30;
-						month++;
-					}
-				}
-			}
-			tmp.strReturnDate=to_string(day)+"/"+to_string(month)+"/"+to_string(lYear);
-			tmp.lPaymentDate=1;
-			iCount ++;
-			Ph.push_back(tmp);
-			saveDataTicket();
-			saveDataBook();
-			return;
-		}
-	}
+
+void trace(CBook &sa, string a) {
+    CTicket tmp;
+    Node<CUser>* currentUser = Us.getHead(); 
+    
+    while (currentUser != NULL) {
+        CUser& user = currentUser->_data; 
+        if (user.strUserCode == a) { 
+            iNumber++;
+            sa.lBookStatus = iCount;
+            tmp.lNumberTicket = iCount;
+            tmp.strReaderCode = a;
+            tmp.strBookCode = sa.strBookCode;
+
+            
+            time_t now = time(0);
+            tm *ltm = localtime(&now);
+            int day = ltm->tm_mday;
+            int month = ltm->tm_mon + 1; 
+            int year = ltm->tm_year + 1900;
+
+            
+            tmp.strLoanDate = to_string(day) + "/" + to_string(month) + "/" + to_string(year);
+
+            
+            day += 7;
+            if (month == 2) { 
+                if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)) { 
+                    if (day > 29) {
+                        day -= 29;
+                        month++;
+                    }
+                } else { 
+                    if (day > 28) {
+                        day -= 28;
+                        month++;
+                    }
+                }
+            } else if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) { 
+                if (day > 31) {
+                    day -= 31;
+                    month++;
+                    if (month > 12) { 
+                        month = 1;
+                        year++;
+                    }
+                }
+            } else { 
+                if (day > 30) {
+                    day -= 30;
+                    month++;
+                }
+            }
+
+            
+            tmp.strReturnDate = to_string(day) + "/" + to_string(month) + "/" + to_string(year);
+
+            tmp.lPaymentDate = 1; 
+
+            iCount++;
+            Ph.addTail(tmp); 
+            Sa.saveDataBook(); 
+            Ph.saveDataTicket(); 
+            return;
+        }
+
+        currentUser = currentUser->_pNext; 
+    }
 }
-void borrowBook()
+
+template <class DataType>
+void LinkedList<DataType>::borrowBook()
 {
-	system("cls");
-	textcolor(15);
-	setposition(5,5); cout << "MA SACH:";
-	setposition(5,6); cout << "MA BAN DOC:";
-	textcolor(6);
-	string book="";
-	string bn="";
-	int n=10;
-	textcolor(11);
-	setposition(5,n-2);cout << "THONG TIN SACH";
-	informationBook(n);
-	textcolor(11);
-	n++;
- 	setposition(5,n-2);cout << "THONG TIN PHIEU";
-	informationTicket(n);
-	textcolor(11);
-	n++;
-	setposition(5,n-2);cout << "THONG TIN USER";
-	 informationUser (n);
-	int iCount =0;
-	iNumber =0;
-	textcolor(6);
-	setposition(14,5);book=inputStringBookCode(14,5,iCount );
-	setposition(17,6);bn=inputStringBookCode(17,6,iCount );
-	if (iCount !=0)
-	{
-		setposition(100,5);
-		cout << "LOI NHAP SAI HE THONG!";
-		goto hoi;
-	}
-	for (list<CBook >::iterator i=Sa.begin();i!=Sa.end();i++)
-	{
-		checkbook(*i,book);
-		if (iNumber ==2)
-		{
-			trace(*i,bn);
-			break;
-		}
-		if (iNumber ==1)
-			break;
-		iNumber =0;
-	}
-	textcolor(14);
-	if (iNumber ==0)
-	{
-		setposition(100,5);
-		cout << "SACH KHONG TON TAI";
-	}
-	if (iNumber ==1)
-	{
-		setposition(100,5);
-		cout << "SACH DANG DUOC MUON";
-	}
-	if (iNumber ==2)
-	{
-		setposition(100,5);
-		cout << "MA BAN DOC KHONG TON TAI";
-	}
-	if (iNumber ==3)
-	{
-		setposition(100,5);
-		cout << "SACH MUON THANH CONG";
-	}
-	hoi:
-	menuFunction(n,n-1);
+    system("cls");
+    textcolor(15);
+    setposition(5, 5); cout << "MA SACH:";
+    setposition(5, 6); cout << "MA BAN DOC:";
+    textcolor(6);
+    string book = "";
+    string bn = "";
+    int n = 10;
+    textcolor(11);
+    setposition(5, n - 2); cout << "THONG TIN SACH";
+    informationBook(n);
+    textcolor(11);
+    n++;
+    setposition(5, n - 2); cout << "THONG TIN PHIEU";
+    informationTicket(n);
+    textcolor(11);
+    n++;
+    setposition(5, n - 2); cout << "THONG TIN USER";
+    informationUser(n);
+
+    int iCount = 0;
+    iNumber = 0;
+    textcolor(6);
+    setposition(14, 5); book = inputStringBookCode(14, 5, iCount);
+    setposition(17, 6); bn = inputStringBookCode(17, 6, iCount);
+    
+    
+    if (iCount != 0)
+    {
+        setposition(100, 5);
+        cout << "LOI NHAP SAI HE THONG!";
+        
+        menuFunction(n, n - 1);
+        return; 
+    }
+
+    
+    Node<CBook>* currentBook = Sa.getHead();
+    while (currentBook != NULL) {
+        CBook& bookData = currentBook->_data;
+        checkbook(bookData, book);
+
+        if (iNumber == 2) {
+            trace(bookData, bn);
+            break;
+        }
+
+        if (iNumber == 1)
+            break;
+
+        iNumber = 0;
+        currentBook = currentBook->_pNext; 
+    }
+
+    
+    textcolor(14);
+    if (iNumber == 0)
+    {
+        setposition(100, 5);
+        cout << "SACH KHONG TON TAI";
+    }
+    else if (iNumber == 1)
+    {
+        setposition(100, 5);
+        cout << "SACH DANG DUOC MUON";
+    }
+    else if (iNumber == 2)
+    {
+        setposition(100, 5);
+        cout << "MA BAN DOC KHONG TON TAI";
+    }
+    else if (iNumber == 3)
+    {
+        setposition(100, 5);
+        cout << "SACH MUON THANH CONG";
+    }
+
+    
+    menuFunction(n, n - 1);
 }
+
+
 bool findBook(CBook & tmp,string a)
 {
-	if (tmp.strBookCode ==a)
+	if (tmp.strBookCode == a)
 	{
-		tmp.lBookStatus=0;
+		tmp.lBookStatus = 0;
 		return true;
 	}
 	return false;
 }
-bool checkTitket(CTicket& tmp,int n)
-{
-	iNumber =0;
-	if (n==tmp.lNumberTicket)
-	{
-		iNumber =1;
-		if (tmp.lPaymentDate!=0)
-		{
-			tmp.lPaymentDate=0;
-			for (auto i=Sa.begin();i!=Sa.end();i++)
-				if (findBook(*i,tmp.strBookCode ))
-				{
-					saveDataTicket();
-					saveDataBook();
-					break;
-				}
-			iNumber =2;
-		}
-		return true;	
-	}
-	return false;
+
+template <class DataType>
+bool checkTicket(CTicket& tmp, int n) {
+    iNumber = 0;
+
+    
+    Node<CTicket>* currentTicket = Ph.getHead();
+    while (currentTicket != NULL) {
+        
+        if (currentTicket->_data.lNumberTicket == n) {
+            tmp = currentTicket->_data;  
+            iNumber = 1;
+
+            
+            if (tmp.lPaymentDate != 0) {
+                tmp.lPaymentDate = 0;  
+                currentTicket->_data = tmp;  
+
+                
+                Node<CBook>* currentBook = Sa.getHead();
+                while (currentBook != NULL) {
+                    if (currentBook->_data.strBookCode == tmp.strBookCode) {
+                        currentBook->_data.lBookStatus = 0;  
+                        break;  
+                    }
+                    currentBook = currentBook->_pNext;
+                }
+
+                
+                Ph.saveDataTicket();
+                Sa.saveDataBook();
+                iNumber = 2;  
+            }
+            return true;  
+        }
+        currentTicket = currentTicket->_pNext;  
+    }
+
+    return false;  
 }
-void returnBook()
-{
-	system("cls");
-	textcolor(15);
-	setposition(5,7); cout << "SO PHIEU MUON:";
-	textcolor(6);
-	string book="";
-	string bn="";
-	int n=11;
-	textcolor(11);
-	setposition(5,n-2);cout << "THONG TIN SACH";
-	informationBook(n);
-	textcolor(11);
-	n++;
- 	setposition(5,n-2);cout << "THONG TIN PHIEU";
-	informationTicket(n);
-	textcolor(6);
-	long tmp;
-	int iCount =0;
-	setposition(20,7);tmp=inputInteger(20,7,iCount );
-	if (iCount !=0)
-	{
-		setposition(100,5);
-		cout << "LOI NHAP SAI HE THONG!";
-		goto hoi;
-	}
-	for (list<CTicket>::iterator i=Ph.begin();i!=Ph.end();i++)
-		if (checkTitket(*i,tmp))
-			break;
-	textcolor(14);
-	if (iNumber ==0)
-	{
-		setposition(100,5);
-		cout << "PHIEU MUON KHONG TON TAI!";
-	}
-	if (iNumber ==1)
-	{
-		setposition(100,5);
-		cout << "KHONG THE TRA SACH!";
-	}
-	if (iNumber ==2)
-	{
-		setposition(100,5);
-		cout << "TRA SACH THANH CONG!";
-	}
-	textcolor(14);
-	hoi:
-	menuFunction(n,n-1);
+
+template <class DataType>
+void LinkedList<DataType>::returnBook() {
+    system("cls");
+    textcolor(15);
+    setposition(5, 7);
+    cout << "SO PHIEU MUON:";
+
+    textcolor(6);
+    string book = "";
+    string bn = "";
+    int n = 11;
+    textcolor(11);
+    setposition(5, n - 2);
+    cout << "THONG TIN SACH";
+    informationBook(n);
+    textcolor(11);
+    n++;
+    setposition(5, n - 2);
+    cout << "THONG TIN PHIEU";
+    informationTicket(n);
+
+    textcolor(6);
+    long tmp;
+    int iCount = 0;
+    setposition(20, 7);
+    tmp = inputInteger(20, 7, iCount);
+    
+    
+    if (iCount != 0) {
+        setposition(100, 5);
+        cout << "LOI NHAP SAI HE THONG!";
+        
+        menuFunction(n, n - 1);
+        return;  
+    }
+
+    
+    Node<CTicket>* currentTicket = Ph.getHead();
+    bool ticketFound = false;
+
+    while (currentTicket != NULL) {
+        if (currentTicket->_data.lNumberTicket == tmp) {
+            ticketFound = true;
+            CTicket ticket = currentTicket->_data;
+
+            
+            if (ticket.lPaymentDate != 0) {
+                ticket.lPaymentDate = 0;
+                currentTicket->_data = ticket; 
+
+                
+                Node<CBook>* currentBook = Sa.getHead();
+                while (currentBook != NULL) {
+                    if (currentBook->_data.strBookCode == ticket.strBookCode) {
+                        currentBook->_data.lBookStatus = 0; 
+                        break; 
+                    }
+                    currentBook = currentBook->_pNext;
+                }
+
+                
+                Ph.saveDataTicket();
+                Sa.saveDataBook();
+
+                
+                textcolor(14);
+                setposition(100, 5);
+                cout << "TRA SACH THANH CONG!";
+            }
+            else {
+                
+                textcolor(14);
+                setposition(100, 5);
+                cout << "KHONG THE TRA SACH!";
+            }
+            break;  
+        }
+        currentTicket = currentTicket->_pNext;  
+    }
+
+    if (!ticketFound) {
+        
+        textcolor(14);
+        setposition(100, 5);
+        cout << "PHIEU MUON KHONG TON TAI!";
+    }
+
+    
+    menuFunction(n, n - 1);
 }
-void manageTicket()
+
+
+template <class DataType>
+void LinkedList<DataType>::manageTicket()
 {
 	while(true)
 	{
@@ -1588,6 +2013,7 @@ void manageTicket()
 		}
 	}
 }
+
 bool menu()
 {
 	while(true)
@@ -1604,7 +2030,7 @@ bool menu()
 		setposition(64,19); cout << " ";
 		while (true)
 		{
-		//	setposition(90,16); cout << ;
+		
 			textcolor(15);
 			setposition(68,16); cout << "QUAN LY SACH";
 			setposition(68,17); cout << "QUAN LY PHIEU MUON";
@@ -1638,12 +2064,14 @@ bool menu()
 			{
 				if (null==0)
 				{
-					bookManagement();
+                    LinkedList<CBook> b;
+					b.bookManagement();
 					break;
 				}
 				if (null==1)
 				{
-					manageTicket();
+                    LinkedList<CTicket> t;
+					t.manageTicket();
 					break;
 				}
 				if (null==2)
@@ -1658,6 +2086,7 @@ bool menu()
 	}
 	return true;
 }
+
 int main()
 {
 	DATA();
